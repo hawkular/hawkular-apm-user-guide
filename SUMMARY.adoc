@@ -5,4 +5,6 @@
 .. link:installation/CLIENT.adoc[Client]
 . link:userguide/README.adoc[User Guide]
 .. link:userguide/CONSOLE.adoc[Console]
+. link:apiref/README.adoc[API Reference]
+.. link:apiref/rest-apm.adoc[REST]
 
