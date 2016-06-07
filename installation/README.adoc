@@ -1,0 +1,2 @@
+This section describes how to install the server and client agent for the Hawkular APM (Application Performance Management) project.
+

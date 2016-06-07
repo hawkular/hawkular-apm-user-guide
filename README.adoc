@@ -1,2 +1,27 @@
-Hawkular Application Performance Management (APM)
+== What is ...?
+
+Since the project began, with the initial focus on "Business Transaction Management" (hence the name), the scope has expanded to include Application Performance Management and more recently Distributed Tracing. So it is worth initially explaining the different areas:
+
+==== Application Performance Management
+
+As defined on https://en.wikipedia.org/wiki/Application_performance_management[wikipedia], "application performance management  (APM)  is the monitoring and management of performance and availability of software applications. APM strives to detect and diagnose complex application performance problems to maintain an expected level of service".
+
+The focus of this area is on the performance of the parts, whether at the application, service, resource or internal component level. So can be viewed as equivalent to a profiling tool for distributed systems.
+
+==== Distributed Tracing
+
+Distributed tracing is concerned with recording and analysing the path(s) taken from an initial invocation as it cascades across a distributed system, primarily as a diagnostic aid to developers and operation teams.
+
+The focus of this area is on the communication paths of individual or multiple (aggregated) invocations across a distributed system, to view the performance profile of the various components along those paths.
+
+==== Business Transaction Management
+
+Business Transaction Management can actually be considered an extension of Distributed Tracing. Both are concerned with the tracing of invocations across potentially multiple distributed services. The difference is that Business Transaction Management is more concerned with the business relevance of the paths taken, and the business metrics that can be obtained and analysed.
+
+It is also worth clarifying the term *Business Transaction* - according to one website footnote:[http://smallbusiness.chron.com/business-transaction-definition-examples-25244.html], _"The accounting definition of a business transaction, according to the online Business Dictionary, is "an economic event that initiates the accounting process of recording it in a company's accounting system." This is the official definition. However, selling an item at a garage sale where no accounting system is in place also can be a business transaction"_.
+
+We prefer to use a more general definition of a Business Transaction. It can be any interactions within a business, or between a business and its customers/partners, that results in direct or indirect value. For example, making an enquiry to obtain information about a item, such as its description or stock level, has no associated economic event. However it may be a necessary precursor to someone considering a purchase, and provide invaluable insight into the browsing patterns of its customer base.
+
+Once we have a definition for a Business Transaction, the next thing to understand is a *Business Transaction Instance*. This is a single occurrance of what is understood to be a Business Transaction. So for example, a person buying a item (e.g. a computer), on a particular day and time, would result in a Business Transaction Instance.
+
 
