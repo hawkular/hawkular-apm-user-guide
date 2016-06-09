@@ -1,3 +1,5 @@
+:imagesdir: ../images
+
 This section describes the user guide for the tools available with the Hawkular APM (Application Performance Management) project.
 
 
