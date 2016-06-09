@@ -2,7 +2,7 @@
 
 image::hawkular_twitter_header_1500x500.png[]
 
-= Application Performance Management (APM)
+== Application Performance Management (APM)
 
 This document provides information about the Application Performance Management (APM)
 component of the Hawkular open source management platform project.
@@ -10,23 +10,23 @@ component of the Hawkular open source management platform project.
 Information about the Hawkular project can be obtained from the website: http://www.hawkular.org
 
 
-== What is Application Performance Management?
+=== What is Application Performance Management?
 
 As defined on https://en.wikipedia.org/wiki/Application_performance_management[wikipedia], _"application performance management  (APM)  is the monitoring and management of performance and availability of software applications. APM strives to detect and diagnose complex application performance problems to maintain an expected level of service"._
 
 We sub-divide this problem into three:
 
-=== Component Performance
+==== Application Performance
 
 The focus of this area is on the performance of the parts, whether at the application, service, resource or internal component level. So can be viewed as equivalent to a profiling tool for distributed systems.
 
-=== Distributed Tracing
+==== Distributed Tracing
 
 Distributed tracing is concerned with recording and analysing the path(s) taken from an initial invocation as it cascades across a distributed system, primarily as a diagnostic aid to developers and operation teams.
 
 The focus of this area is on the communication paths of individual or multiple (aggregated) invocations across a distributed system, to view the performance profile of the various components along those paths.
 
-=== Business Transaction Management
+==== Business Transactions
 
 Business Transaction Management can actually be considered an extension of Distributed Tracing. Both are concerned with the tracing of invocations across potentially multiple distributed services. The difference is that Business Transaction Management is more concerned with the business relevance of the paths taken, and the business metrics that can be obtained and analysed.
 
@@ -37,7 +37,7 @@ We prefer to use a more general definition of a Business Transaction. It can be 
 Once we have a definition for a Business Transaction, the next thing to understand is a *Business Transaction Instance*. This is a single occurrance of what is understood to be a Business Transaction. So for example, a person buying a item (e.g. a computer), on a particular day and time, would result in a Business Transaction Instance.
 
 
-== Structure of the Guide
+=== Structure of the Guide
 
 This guide will begin by providing information regarding how to install
 the APM system within a client and server environment.

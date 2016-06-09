@@ -1,3 +1,5 @@
+:imagesdir: ../images
+
 :toc: macro
 :toc-title:
 
@@ -142,7 +144,7 @@ Once a transaction instance has been associated with a business transaction, the
 
 ==== Processors
 
-Out of the box, Hawkular BTM is configured with instrumentation rules for a selection of technologies, that can used to monitor generic information about business transaction instances executing over those technologies.
+Out of the box, Hawkular APM is configured with instrumentation rules for a selection of technologies, that can used to monitor generic information about business transaction instances executing over those technologies.
 
 However, to make this information more useful in a business context, it is important to also be able to extract relevant details from the business messages, to aid future analysis. This section will explain how the additional "business transaction specific configuration" can be provided.
 
