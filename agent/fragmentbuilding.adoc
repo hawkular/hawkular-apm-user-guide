@@ -1,0 +1,122 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+== Trace Fragment Builder
+
+=== Composition of a Trace Fragment
+
+Firstly we need to explain what a _trace_ is. An APM _trace_ is similar in nature to a call trace within a single process, in that it identifies dependencies where one component calls another and how much time is spent within each component. The difference from a traditional call trace is that an APM _trace_ can describe the invocations that span across multiple distributed components (services), and can also occur concurrently.
+
+Therefore, a _trace fragment_ represents part of an end to end _trace_, associated with a particular service or thread within an application that uses concurrent threads.
+
+So the information captured and reported by each collector environment represents part of the conversation instances. These are then reconstituted into end to end views within the backend server.
+
+==== Trace
+
+The top level construct to represent a _trace fragment_ is the link:../apiref/rest-apm.html#Trace[_Trace_] class. The reason it is not called _TraceFragment_ is that the same class can also be used to represent the reconstituted end to end trace.
+
+This has two important aspects, the _properties_ field which holds the business properties that may be queried to filter traces or aggregate relevant information for the business, and _node_ which provides the hierarchy of activity being represented in the fragment. Generally a _trace_ will have a single top level node, however a _trace_ has been defined to support a list of top level nodes, to support the future requirement to represent a series of user invocations that belong to a single "business transaction" instance.
+
+==== Node
+
+The call hierarchy is represented by three concrete classes indirectly derived from the link:../apiref/rest-apm.html#Node[_Node_] class. These three classes are described below.
+
+Each node can include details that provide information that may be useful when examining a trace. These will tend to be technology specific, e.g. HTTP headers.
+
+
+===== Consumer
+
+This link:../apiref/rest-apm.html#Consumer[_Consumer_] class represents the consumption of an invocation, at an endpoint, that will trigger some activity. The link:../apiref/rest-apm.html#Consumer[_Consumer_] is identified primarily by its endpoint URI and optional operation.
+
+The link:../apiref/rest-apm.html#Consumer[_Consumer_] node can optionally have _in_ and _out_ message content, initialised by actions defined in a business transaction configuration.
+
+When the consumer represents communication with a remote party, then it must define the _endpointType_ field. Suitable values can be HTTP, MOM (message oriented middleware), etc.
+
+===== Component
+
+This link:../apiref/rest-apm.html#Component[_Component_] class represents an internal component providing some functionality to the invoked application instance. Components could be EJBs, Databases, etc. The link:../apiref/rest-apm.html#Component[_Component_] is identified primarily by its endpoint URI and optional operation.
+
+===== Producer
+
+This link:../apiref/rest-apm.html#Producer[_Producer_] class represents the invocation of an endpoint. The link:../apiref/rest-apm.html#Producer[_Producer_] is identified primarily by its invoked endpoint URI and optional operation.
+
+The link:../apiref/rest-apm.html#Producer[_Producer_] node can optionally have _in_ and _out_ message content, initialised by actions defined in a business transaction configuration.
+
+When the producer represents communication with a remote party, then it must define the _endpointType_ field. Suitable values can be HTTP, MOM (message oriented middleware), etc.
+
+=== Building a Trace Fragment
+
+==== How to build
+
+The node hierarchy represented within a _trace fragment_ is a direct reflection of the call stack within a process thread executing the application instance. This is a slightly simplistic view, as the application invocation may be executed asynchronously across multiple threads, but conceptually it is a call stack. Therefore the most appropriate way to build this hierarchy is using a stack upon which the current node being process can be _pushed_, and then when the scope of a particular node has been completed, it can be _popped_ from the stack.
+
+For example, when an invocation is received from a remote client, a link:../apiref/rest-apm.html#Consumer[_Consumer_] node will be pushed onto the stack. If within the scope of that invocation a database call is performed, this may caused a _Component_ node to be pushed onto the stack with the details related to the database operation. Once the operation has been completed, the _Component_ will be popped from the stack. If then a call to a remote service is performed, this would result in a link:../apiref/rest-apm.html#Producer[_Producer_] being pushed onto the stack and subsequently popped when the response is received. This would continue until eventually the response is returned to the initial client, resulting in the link:../apiref/rest-apm.html#Consumer[_Consumer_] node being popped from the stack.
+
+When the first activity to be recorded is created, which will usually be a link:../apiref/rest-apm.html#Consumer[_Consumer_], no link:../apiref/rest-apm.html#Trace[_Trace_] fragment will exist. So in this situation, the link:../apiref/rest-apm.html#Trace[_Trace_] fragment will be initialised with an unique id and other relevant details (e.g. host name/ip address), and the initial node will be added to the link:../apiref/rest-apm.html#Trace[_Trace_] as a top level node, before being pushed into the stack.
+
+When other nodes are being created, before they are pushed into the stack they should first be added as a child node to the current top level node on the stack. This will establish the parent/child relationship between the nodes.
+
+When the stack is empty, following a node being popped, then the fragment should be recorded - as discussed in a subsequent section.
+
+==== Whether to build
+
+The previous section described how an application invocation could be recorded as a link:../apiref/rest-apm.html#Trace[_Trace_] fragment. However not all invocations performed within a monitored environment will be of interest. Therefore a mechanism is provided to determine what fragments should be captured and recorded.
+
+The link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] information obtained when initialising the connection to the APM server, and subsequently refreshed to obtain updates (if a refresh interval is configured), defines filters to determine whether activity is of interest.
+
+If the thread associated with a monitored activity is already associated with a link:../apiref/rest-apm.html#Trace[_Trace_] fragment, then it will continue to be monitored.
+
+If a link:../apiref/rest-apm.html#Consumer[_Consumer_] based activity is detected on a thread that is currently not being monitored, but the received communication has an id indicating that this is a continuation of a monitored conversation from a previous application component (i.e. service), then the activities will continue to be monitored.
+
+Otherwise, if a new activity is detected, and a link:../apiref/rest-apm.html#Trace[_Trace_] fragment does not currently exist for the processing thread, then the URI and (optional) operation information associated with that activity should be compared against the filter information for each available link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_].
+
+If a link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] exists with only exclusion filters, then this represents a set of global exclusion filters. If one of those filters matches the detected activity, then no link:../apiref/rest-apm.html#Trace[_Trace_] fragment should be built.
+
+If a link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] exists with inclusion and exclusion filters, then if the detected activity (URI and optional operation) matches an inclusion filter, but also matches an exclusion filter for the same link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_], then the link:../apiref/rest-apm.html#Trace[_Trace_] fragment should not be built. This means that the detected activity has been classified as belonging to this type of _Business Transaction_, but this particular activity within the scope of that business transaction is not of interest.
+
+Otherwise, whether or not a link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] exists that matches an inclusion filter, the activity should be built and recorded.
+
+==== Dealing with multiple threads
+
+There are two scenarios in which multiple threads will be involved, and they require handling in different ways.
+
+===== Asynchronous request handling
+
+When dealing with asynchronous request handling, the thread that receives a response will not be the same as the one that processed the request. Therefore the fragment builder that is associated with the request thread needs to become associated with the thread handling the response.
+
+This can be achieved by establishing correlation information, linked to the relevant fragment builder, which can be retrieved by the response handling thread.
+
+Note: once the request thread has completed its work, it should decouple itself from the fragment builder in case it gets reused for other unrelated work.
+
+===== Spawning concurrent activities
+
+A link:../apiref/rest-apm.html#Trace[_Trace_] fragment is only intended to represent a single thread of control. Therefore, if the application initiates one or more additional threads of work concurrently, then these need to each be represented by a separate link:../apiref/rest-apm.html#Trace[_Trace_] fragment, with an internal link between the spawning and spawned fragments. This link is established by creating link:../apiref/rest-apm.html#Producer[_Producer_] node within the spawning fragment (with blank _endpointType_) that has a correlation id linking it to the link:../apiref/rest-apm.html#Consumer[_Consumer_] node (with blank _endpointType_), at the top of each of the spawned fragments.
+
+NOTE: The internal link between fragments is distinguished based on the absence of the endpoint type information.
+
+
+==== Linking trace fragments
+
+As previously mentioned, an end to end link:../apiref/rest-apm.html#Trace[_Trace_] will be comprised of one or more fragments collected from different co-operating services that comprise the application. Therefore it is necessary to link the individual fragments based on ids that are shared between the communicating parties.
+
+When a link:../apiref/rest-apm.html#Producer[_Producer_] is being recorded in one fragment, it should result in an id being created for that specific communication, that will be recorded as an Interaction correlation id on the link:../apiref/rest-apm.html#Producer[_Producer_] node as well as being passed with the invocation (e.g. as a header property). Once received by the invoked component, it should be extracted from the received communication (i.e. header property) and recorded as an Interaction correlation id on the link:../apiref/rest-apm.html#Consumer[_Consumer_] node.
+
+Although this unique id is important to ensure the link:../apiref/rest-apm.html#Producer[_Producer_] and link:../apiref/rest-apm.html#Consumer[_Consumer_] nodes are correlated, it is also important to transfer other monitoring related information with the communication. This includes:
+
+* Business Transaction Name - if the application invocation has been classified as belonging to a particular business transaction configuration, then the name should be propagated to each invoked service, to ensure that any subsequent information processing is correctly performed (e.g. extracting business properties).
+
+* Reporting Level - to enable a decision regarding the appropriate reporting level to be propagated to all invoked components.
+
+
+
+==== Processing message content
+
+In the following section, discussing information processing based on the business transaction configurations, some of the actions related to extracting information from message headers or content.
+
+However, making this information available from the instrumented application/framework code may not be efficient - and therefore should only be performed if there are business transaction configurations that require the information. Therefore, before making such information available for further processing, a check should be performed to determine if the information is required.
+
+

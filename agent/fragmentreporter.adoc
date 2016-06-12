@@ -1,0 +1,21 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+== Trace Fragment Reporter
+
+When a link:../apiref/rest-apm.html#Trace[_Trace_] fragment has been built, as the result of instrumenting and processing activity caused by an application being invoked, it will be reported to a local component responsible for delivering the information to the APM (Application Performance Management) server.
+
+To ensure that the fragment information is reported to the server in the most efficient manner, it will be batched and sent to the server when one of two situations occur:
+
+* a number of millseconds, defined in the *HAWKULAR_APM_COLLECTOR_BATCHTIME* environment variable, expires
+
+* the batch size exceeds the value defined in the *HAWKULAR_APM_COLLECTOR_BATCHSIZE* environment variable
+
+Fragments are reported to the server via the link:../apiref/rest-apm.html#POST__fragments[REST API].
+
+NOTE: Other communication mechanisms will be supported in the future.
+

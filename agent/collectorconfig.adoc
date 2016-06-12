@@ -1,0 +1,59 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+== Configuring the Collector
+
+The client side collection mechanism is divided into two layers:
+
+- The first instruments the application to identify the different monitoring points, using the captured information to build up a call trace each time the application is invoked.
+
+- The second layer uses the information made available, as part of observing the executing application instance, to classify the invocation as belonging to a particular business transaction - and optionally extracting business transaction specific properties from that application invocation.
+
+This section will describe more information about the two laters.
+
+=== Instrumenting the Application
+
+Depending upon the nature of the application language and environment being monitored, the instrumentation of the application could be performed non-instrusively, or by adding hooks into the application code and frameworks being used.
+
+Whichever approach is used, the non-intrusive or explicitly added hooks will be responsible for building the call trace fragments, as discussed in the following section on link:fragmentbuilding.adoc[Trace Fragment Building].
+
+==== Non-instrusive instrumentation
+
+Where supported, the ideal approach for instrumentation and application (and the frameworks it uses) is non-instrusively. This means that the application (and frameworks) are not required to be changed to provide the information required by Hawkular APM.
+
+The other benefit of this approach is that it can be dynamically configured, based on rules provided by the server - allowing those rules to be managed independent from the development lifecycle of the application being monitored.
+
+===== Java Virtual Machine (JVM)
+
+The instrumentation of the Java Virtual Machine (JVM) uses this non-intrusive approach by leveraging the Byteman project. Byteman enables rules to be declared that will insert code into various points within an interface or class method, using a _javaagent_.
+
+The Hawkular APM rules are defined in a JSON representation and converted into Byteman text based rules within the client environment.
+
+NOTE: The format and semantics of the JSON based instrumentation rules are subject to change until a stable version 1.0 is released.
+
+
+==== Application/framework instrumentation
+
+The other approach that can be used to instrument an application is to explicitly introduce interceptors (or hooks) into the application (and framework) code.
+
+This is the approach taken by other distributed tracing technologies, such as http://zipkin.io/[zipkin].
+
+
+=== Retrieving the Business Transaction Configurations
+
+The business transaction configurations can be obtained from the server using this link:../apiref/rest-apm.html#GET__config_businesstxn_full[REST call].
+
+This call takes an optional _timestamp_ as a parameter. If not provided, then all current business transaction configurations will be returned.
+
+If a _timestamp_ is provided, then all business transaction configurations that have changed since the supplied _timestamp_ will be returned.
+
+The REST call will return a list of link:../apiref/rest-apm.html#BusinessTxnConfig[BusinessTxnConfig] objects.
+
+If the environment variable (or system property) *_HAWKULAR_APM_CONFIG_REFRESH_* is defined, then its value should be used to establish a refresh cycle to request any updated business transaction configurations, applying any updates as they are received.
+
+
+
