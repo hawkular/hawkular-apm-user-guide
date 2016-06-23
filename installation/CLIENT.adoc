@@ -32,9 +32,9 @@ will override the environment variables. The property names are:
 |===
 | Name | Description
 
-| HAWKULAR_APM_URI | The URI for the APM server. The default value is _http://localhost:8180_.
-| HAWKULAR_APM_USERNAME | The username to use with the REST client when communicating with the APM server. The default is _jdoe_.
-| HAWKULAR_APM_PASSWORD | The password to use with the REST client when communicating with the APM server. The default is _password_.
+| HAWKULAR_APM_URI | The URI for the APM server. The default value defined in the _setenv.sh_ script is _http://localhost:8180_.
+| HAWKULAR_APM_USERNAME | The username to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_jdoe_*.
+| HAWKULAR_APM_PASSWORD | The password to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_password_*.
 | HAWKULAR_APM_CONFIG_REFRESH | Optional business transaction configuration refresh interval (in seconds).
 | HAWKULAR_APM_LOG_LEVEL | The logging level to use when reporting client collector information to the console (uses Java Util Logging levels. The default is _INFO_.
 |===
