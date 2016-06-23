@@ -11,11 +11,13 @@ Once the server has been installed, and started, you will be able to start up th
 
 _Where 'port' is the port used by the server (e.g. 8180 if port offset of 100 has been used)._
 
-When the server is initially started, then the default username and password is *_jdoe_* and *_password_*.
+When the server is initially installed, then the default username and password is *_jdoe_* and *_password_*. When accessing the UI, you will be asked to enter the username and password.
 
-== Application Performance
+== Components
 
-This page shows Application Performance Management information related to the applications and their components being monitored.
+image::apm-components.png[]
+
+This page shows component information related to the applications being monitored.
 
 The lefthand side of the page provides a collapsible sidebar with various filters that can be applied to the information being viewed. This is explained in more detail in a later section.
 
@@ -28,6 +30,8 @@ The metrics provided are _count_ (the number of activity records aggregated), th
 This information can be used to identify performance bottlenecks within an application. Using details about the amount of 'actual' time specific within a component, combined with the number of times it is invoked, can help locate the best opportunities for making performance improvements.
 
 == Distributed Tracing
+
+image::apm-tracing.png[]
 
 This page shows a graphical representation of the path taken by interactions through a set of distributed services.
 
@@ -67,6 +71,8 @@ This page shows information about the business transactions, separated into tabs
 
 ==== Managed
 
+image::apm-btm-managed.png[]
+
 This tab shows summary statistics for a list of actively managed or disabled business transactions.
 
 On the left of the page is two pie charts representing the transaction and fault counts across the business transactions.
@@ -90,6 +96,8 @@ For each business transaction:
 
 ==== Candidates
 
+image::apm-btm-candidates.png[]
+
 The candidates tab is used to identify interactions (associated with URIs) that have not currently be associated with a business transaction. When new URIs are detected, a red flag symbol will appear next to the _Candidates_ tab name.
 
 At the top of the page, it is possible to either enter the name of a new business transaction, or select one of the existing business transactions from a drop down list. Once a name has been entered, or existing one selected, then the list of URIs will become enabled.
@@ -111,8 +119,23 @@ This tab lists the business transactions that are being ignored.
 
 This state exists to enable business transaction instances to be categorised, and permanently marked as not being of interest. By explicitly identifying even business interactions that are not of interest, it is possible to detect any new traffic that may occur that has not previously be categorised, which informs the administrators that attention is required to investigate the unfamilar interactions.
 
+=== Information
+
+image::apm-btm-btxn.png[]
+
+The page is divided into three main regions.
+
+The top graph shows an aggregated view of the stats associated with completed business transactions subject to any defined time span and other filter criteria (e.g. faults and/or properties). The stats are displayed as line charts for min, average and max values. A bar chart is used to dusplay the number of transactions, and the number of transactions that completed with a fault.
+
+The left hand bottom pie chart displays the faults that occurred. If a pie chart segment representing a particular fault is selected, it will add that fault as a filter, focusing all the data in the other charts on the business transactions associated with that fault.
+
+The right hand bottom region defines the business transaction properties that are available. The user can select a particular property from the dropdown menu, and its information will be displayed in a pie chart. As with the fault pie chart, selecting one of the pie chart segments will add that property name and value as a filter on the data viewed in the page.
+
+Both the fault and property filters are displayed at the top of the page. When displayed in green, they will filter out business transactions with that fault or property value. If however the user selects the filter, it will toggle to become red, representing the fact that data should be shown that does *not* contain that fault or property value.
 
 === Configuration
+
+image::apm-btm-btxn-config.png[]
 
 Whenever changes are saved, or the form is initially displayed, any validation errors will be displayed. Errors will also be highlighted on the form, by the appropriate field labels being displayed in red.
 
@@ -168,7 +191,9 @@ If a processor is defined, it is comprised of an initial set of parameters to id
 
 |===
 
-As mentioned, each processor can define multiple actions to be performed on nodes that meet the criteria associated with the processor.
+As mentioned, each processor can define multiple actions to be performed on nodes that meet the criteria associated with the processor. For example, the following action is used to set a property on the trace.
+
+image::apm-btm-btxn-config-action.png[]
 
 Each action can also be guarded by its own predicate, so that not all actions will be performed for each node that passes the processor's overall criteria. The default is no predicate for the actions.
 
