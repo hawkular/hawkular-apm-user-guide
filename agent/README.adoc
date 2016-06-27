@@ -1,0 +1,4 @@
+:imagesdir: ../images
+
+This section provides the specification of the agent functionality.
+

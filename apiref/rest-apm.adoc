@@ -1,5647 +1,2557 @@
+:imagesdir: ../images
 
+:toc: macro
+:toc-title:
 
+toc::[]
 
-The REST API for the Hawkular Application Performance Management server
+== Overview
 
+=== Media Type
 
-== Base path
+The API uses *JSON* to communicate with clients.
 
-#`/hawkular/apm`#
+You _should_ add the following accept header to your requests:
 
-== Operations
+----
+Accept: application/json
+----
 
+When you send JSON data with a `POST` or `PUT` request, you _must_ add the following content type header:
 
-### /analytics/alerts/count/{name}
+----
+Content-Type: application/json
+----
 
+=== Tenant Header
 
-#### GET
+Hawkular APM is a multi-tenant system. Your requests to tenant-dependent resources must include
+a tenant header:
 
+----
+Hawkular-Tenant: my-tenant
+----
 
+=== Timestamps
 
-Get the business transaction alert count
+The API understands all timestamps as milliseconds since January 1, 1970, 00:00:00 UTC.
 
+=== Response codes
 
+Resources in the API follow response codes conventions, listed below.
 
+.Response codes conventions
+[cols="30,70a", options="header"]
+|===
+|Response code |Meaning
 
+|200 Ok
+|The operation completed successfully.
 
-##### Request
+|201 Created
+|A `POST` or `PUT` operation to create an entity completed successfully.
+The reponse should contain a `Location` header.
 
+|204 No Content
+|The operation completed successfully but result entity is null (`object`) or empty (`array`).
+Empty arrays are not sent in the response body.
 
-**Content-Type: ** application/json
+|400 Bad Request
+|The operation could not be processed. It could be due to:
 
+* Missing or malformed request entity
+* Missing header/query parameter
+* Malformed path/header/query parameter
+* Invalid parameters (breaking business rules)
 
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |name|path|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | 
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/boundendpoints/{name}
-
-
-#### GET
-
-
-
-Identify the bound endpoints for a business transaction
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |name|path|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|optional &#x27;start&#x27; time, default 1 hour before current time
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|optional &#x27;end&#x27; time, default current time
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/communication/summary
-
-
-#### GET
-
-
-
-Get the business transaction communication summary statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|no|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |tree|query|no|tree
- | - |
-
-    
-            boolean 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the business transaction communication summary statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-
- |tree|query|no|tree
- | - |
-
-    
-            boolean 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/completion/count
-
-
-#### GET
-
-
-
-Get the business transaction completion count
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | 
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/completion/faultcount
-
-
-#### GET
-
-
-
-Get the number of business transaction instances that returned a fault
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | 
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/completion/faults
-
-
-#### GET
-
-
-
-Get the business transaction completion fault details associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the business transaction completion fault details associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/completion/percentiles
-
-
-#### GET
-
-
-
-Get the business transaction completion percentiles associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | <<Percentiles,Percentiles>>
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/completion/property/{property}
-
-
-#### GET
-
-
-
-Get the business transaction completion property details associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |property|path|yes|property
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the business transaction completion property details associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |property|path|yes|property
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/completion/statistics
-
-
-#### GET
-
-
-
-Get the business transaction completion timeseries statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |interval|query|no|aggregation time interval (in milliseconds)
- |60000|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the business transaction completion timeseries statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |interval|query|no|aggregation time interval (in milliseconds)
- |60000|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/hostnames
-
-
-#### GET
-
-
-
-Get the host names associated with the criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|no|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the host names associated with the criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/node/statistics
-
-
-#### GET
-
-
-
-Get the business transaction node timeseries statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|no|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |interval|query|no|aggregation time interval (in milliseconds)
- |60000|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the business transaction node timeseries statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |interval|query|no|aggregation time interval (in milliseconds)
- |60000|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/node/summary
-
-
-#### GET
-
-
-
-Get the business transaction node summary statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|no|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get the business transaction node summary statistics associated with criteria
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### /analytics/principals
-
-
-#### GET
-
-
-
-Get principal information
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |principal|query|no|principal
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |faults|query|no|faults
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-#### POST
-
-
-
-
-Get principal information
-
-
-
-
-
-##### Request
-
-
-**Content-Type: ** application/json
-
-
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |body|body|yes|query criteria
- | - |
-
-    
-    <<Criteria,Criteria>>
-
-
-
-
-
-
-|=======================
-
-
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
-
-
-
-
-
-
-
-
-
-
-
+|404 Not Found
+|Resource denoted by the URI does not exist.
 
+|405 Method Not Allowed
+|Resource denoted by the URI does not support the operation type.
 
+|406 Not Acceptable
+|Cannot reply in a format accepted by the client (specified in `Accept` request header).
 
+|409 Conflict
+|A `POST` or `PUT` operation could not be performed because it conflicts with an existing entity.
 
-### /analytics/properties
+|415 Unsupported Media Type
+|Invalid request entity format. For example, `text/plain` whereas `application/json` is expected.
 
+|500 Internal Server Error
+|Resource operation failed unexpectedly.
 
-#### GET
+|503 Service Unavailable
+|The server failed to initialize or the storage backend is not ready yet.
+|===
 
+=== Error responses
 
+Error responses may include an <<ApiError>> entity in the body.
 
-Get property information
+.Sample error entity
+[source,javascript]
+----
+{"errorMsg":"Tenant is not specified. Use 'Hawkular-Tenant' header."}
+----
 
 
 
+== Base Path
+`/hawkular/apm/`
 
+== REST APIs
 
-##### Request
 
+=== analytics
+. link:#++GET__analytics_boundendpoints__name_++[Identify the bound endpoints for a business transaction]
+. link:#++GET__analytics_communication_summary++[Get the trace communication summary statistics associated with criteria]
+. link:#++POST__analytics_communication_summary++[Get the trace communication summary statistics associated with criteria]
+. link:#++GET__analytics_hostnames++[Get the host names associated with the criteria]
+. link:#++POST__analytics_hostnames++[Get the host names associated with the criteria]
+. link:#++GET__analytics_node_statistics++[Get the trace node timeseries statistics associated with criteria]
+. link:#++POST__analytics_node_statistics++[Get the trace node timeseries statistics associated with criteria]
+. link:#++GET__analytics_node_summary++[Get the trace node summary statistics associated with criteria]
+. link:#++POST__analytics_node_summary++[Get the trace node summary statistics associated with criteria]
+. link:#++GET__analytics_principals++[Get principal information]
+. link:#++POST__analytics_principals++[Get principal information]
+. link:#++GET__analytics_properties++[Get property information]
+. link:#++POST__analytics_properties++[Get property information]
+. link:#++GET__analytics_trace_completion_count++[Get the trace completion count]
+. link:#++GET__analytics_trace_completion_faultcount++[Get the number of trace instances that returned a fault]
+. link:#++GET__analytics_trace_completion_faults++[Get the trace completion fault details associated with criteria]
+. link:#++POST__analytics_trace_completion_faults++[Get the trace completion fault details associated with criteria]
+. link:#++GET__analytics_trace_completion_percentiles++[Get the trace completion percentiles associated with criteria]
+. link:#++GET__analytics_trace_completion_property__property_++[Get the trace completion property details associated with criteria]
+. link:#++POST__analytics_trace_completion_property__property_++[Get the trace completion property details associated with criteria]
+. link:#++GET__analytics_trace_completion_statistics++[Get the trace completion timeseries statistics associated with criteria]
+. link:#++POST__analytics_trace_completion_statistics++[Get the trace completion timeseries statistics associated with criteria]
+. link:#++GET__analytics_unboundendpoints++[Identify the unbound endpoints]
 
-**Content-Type: ** application/json
 
+==============================================
 
-[options="header"]
-|=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
-
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |businessTransaction|query|yes|business transaction name
- | - |
-
-    
-            string 
-    
-
-
-
-
-
-
-
- |startTime|query|no|business transactions after this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
-
-
-
-
-
-
-
- |endTime|query|no|business transactions before this time, millisecond since epoch
- |0|
-
-    
-            integer (int64)
-    
+[[GET__analytics_boundendpoints__name_]]
+*Endpoint GET `/analytics/boundendpoints/{name}`*
 
+NOTE: *Identify the bound endpoints for a business transaction* +
 
 
 
 
+*Path parameters*
 
-
- |hostName|query|no|host name
- | - |
-
-    
-            string 
-    
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|name|Yes|business transaction name|string|-|-
 
+|=======================
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
- |principal|query|no|principal
- | - |
+|startTime|No|optional 'start' time, default 1 hour before current time|integer|int64|-
+|endTime|No|optional 'end' time, default current time|integer|int64|-
 
-    
-            string 
-    
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
- |properties|query|no|business transactions with these properties, defined as a comma separated list of name|value pairs
- | - |
 
-    
-            string 
-    
 
+==============================================
 
 
 
 
+==============================================
 
+[[GET__analytics_communication_summary]]
+*Endpoint GET `/analytics/communication/summary`*
 
- |faults|query|no|faults
- | - |
+NOTE: *Get the trace communication summary statistics associated with criteria* +
 
-    
-            string 
-    
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|No|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|tree|No|tree|boolean|-|-
 
 |=======================
-
 
 
-##### Response
 
-**Content-Type: ** application/json
+*Response*
 
-[options="header"]
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
+
 |=======================
 
-{empty} +
 
 
+==============================================
 
 
 
 
+==============================================
 
+[[POST__analytics_communication_summary]]
+*Endpoint POST `/analytics/communication/summary`*
 
-#### POST
+NOTE: *Get the trace communication summary statistics associated with criteria* +
 
 
 
 
-Get property information
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|tree|No|tree|boolean|-|-
 
+|=======================
 
 
-##### Request
 
+*Body*
 
-**Content-Type: ** application/json
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
 
 
 
+*Response*
 
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |Hawkular-Tenant|header|no|
- | - |
+|200|Success|array of object
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |body|body|yes|query criteria
- | - |
+==============================================
 
-    
-    <<Criteria,Criteria>>
+[[GET__analytics_hostnames]]
+*Endpoint GET `/analytics/hostnames`*
 
+NOTE: *Get the host names associated with the criteria* +
 
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-
-
-
-##### Response
+|Parameter|Required|Description|Type|Format|Allowable Values
 
-**Content-Type: ** application/json
+|businessTransaction|No|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 
-[options="header"]
 |=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
 
 
 
+*Response*
 
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
 
 
+==============================================
 
-### /analytics/unboundendpoints
+[[POST__analytics_hostnames]]
+*Endpoint POST `/analytics/hostnames`*
 
+NOTE: *Get the host names associated with the criteria* +
 
-#### GET
 
 
 
-Identify the unbound endpoints
+*Body*
 
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
 
-##### Request
 
+*Response*
 
-**Content-Type: ** application/json
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
 
 
 
+==============================================
 
 
 
- |Hawkular-Tenant|header|no|
- | - |
 
-    
-            string 
-    
+==============================================
 
+[[GET__analytics_node_statistics]]
+*Endpoint GET `/analytics/node/statistics`*
 
+NOTE: *Get the trace node timeseries statistics associated with criteria* +
 
 
 
 
+*Query parameters*
 
- |startTime|query|no|optional &#x27;start&#x27; time, default 1 hour before current time
- |0|
-
-    
-            integer (int64)
-    
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|No|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |endTime|query|no|optional &#x27;end&#x27; time, default current time
- |0|
+|200|Success|array of object
+|500|Internal server error|-
 
-    
-            integer (int64)
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |compress|query|no|compress list to show common patterns
- |false|
+==============================================
 
-    
-            boolean 
-    
+[[POST__analytics_node_statistics]]
+*Endpoint POST `/analytics/node/statistics`*
 
+NOTE: *Get the trace node timeseries statistics associated with criteria* +
 
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-
+|Parameter|Required|Description|Type|Format|Allowable Values
 
-
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
+|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
 
 |=======================
 
-{empty} +
 
 
+*Body*
 
-
-
-
-
-
-
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
-### /config/businesstxn/full
 
+==============================================
 
-#### GET
 
 
 
-Retrieve the business transaction configurations, changed since an optional specified time
+==============================================
 
+[[GET__analytics_node_summary]]
+*Endpoint GET `/analytics/node/summary`*
 
+NOTE: *Get the trace node summary statistics associated with criteria* +
 
 
 
-##### Request
 
+*Query parameters*
 
-**Content-Type: ** application/json
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|No|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |Hawkular-Tenant|header|no|
- | - |
+|200|Success|array of object
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |updated|query|no|updated since
- |0|
+==============================================
 
-    
-            integer (int64)
-    
+[[POST__analytics_node_summary]]
+*Endpoint POST `/analytics/node/summary`*
 
+NOTE: *Get the trace node summary statistics associated with criteria* +
 
 
 
 
+*Body*
 
+[cols="^20,55,^25", options="header"]
 |=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
-##### Response
 
-**Content-Type: ** application/json
 
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | 
-| 500    | Internal server error |  - 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
+|Status Code|Reason|Response Model
 
-{empty} +
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
 
 
-#### POST
+==============================================
 
+[[GET__analytics_principals]]
+*Endpoint GET `/analytics/principals`*
 
+NOTE: *Get principal information* +
 
 
-Add or update the business transaction configurations
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
-##### Request
+|=======================
 
 
-**Content-Type: ** application/json
 
+*Response*
 
-[options="header"]
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
-
-
+|=======================
 
- |Hawkular-Tenant|header|no|
- | - |
 
-    
-            string 
-    
 
+==============================================
 
 
 
 
+==============================================
 
-|=======================
+[[POST__analytics_principals]]
+*Endpoint POST `/analytics/principals`*
 
+NOTE: *Get principal information* +
 
 
-##### Response
 
-**Content-Type: ** application/json
 
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
+*Body*
 
+[cols="^20,55,^25", options="header"]
 |=======================
-
-{empty} +
-
-
-
-
-
-
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
-### /config/businesstxn/full/{name}
 
+==============================================
 
-#### GET
 
 
 
-Retrieve the business transaction configuration for the specified name
+==============================================
 
+[[GET__analytics_properties]]
+*Endpoint GET `/analytics/properties`*
 
+NOTE: *Get property information* +
 
 
 
-##### Request
 
+*Query parameters*
 
-**Content-Type: ** application/json
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
 
 
 
+*Response*
 
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |Hawkular-Tenant|header|no|
- | - |
+|200|Success|array of object
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |name|path|yes|business transaction name
- | - |
+==============================================
 
-    
-            string 
-    
+[[POST__analytics_properties]]
+*Endpoint POST `/analytics/properties`*
 
+NOTE: *Get property information* +
 
 
 
 
+*Body*
 
+[cols="^20,55,^25", options="header"]
 |=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
-##### Response
 
-**Content-Type: ** application/json
 
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | <<BusinessTxnConfig,BusinessTxnConfig>>
-| 500    | Internal server error |  - 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-
-{empty} +
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
-#### PUT
 
 
 
-Add or update the business transaction configuration for the specified name
+==============================================
 
+[[GET__analytics_trace_completion_count]]
+*Endpoint GET `/analytics/trace/completion/count`*
 
+NOTE: *Get the trace completion count* +
 
 
 
-##### Request
 
+*Query parameters*
 
-**Content-Type: ** application/json
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
 
 
 
+*Response*
 
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |Hawkular-Tenant|header|no|
- | - |
+|200|Success|integer
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |name|path|yes|business transaction name
- | - |
+==============================================
 
-    
-            string 
-    
+[[GET__analytics_trace_completion_faultcount]]
+*Endpoint GET `/analytics/trace/completion/faultcount`*
 
+NOTE: *Get the number of trace instances that returned a fault* +
 
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
 |=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
 
-|=======================
 
-{empty} +
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|integer
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
-#### DELETE
 
 
 
-Remove the business transaction configuration with the specified name
+==============================================
 
+[[GET__analytics_trace_completion_faults]]
+*Endpoint GET `/analytics/trace/completion/faults`*
 
+NOTE: *Get the trace completion fault details associated with criteria* +
 
 
 
-##### Request
 
+*Query parameters*
 
-**Content-Type: ** application/json
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
 
 
 
+*Response*
 
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |Hawkular-Tenant|header|no|
- | - |
+|200|Success|array of object
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |name|path|yes|business transaction name
- | - |
+==============================================
 
-    
-            string 
-    
+[[POST__analytics_trace_completion_faults]]
+*Endpoint POST `/analytics/trace/completion/faults`*
 
+NOTE: *Get the trace completion fault details associated with criteria* +
 
 
 
 
+*Body*
 
+[cols="^20,55,^25", options="header"]
 |=======================
-
-
-
-##### Response
+|Required|Description|Data Type
 
-**Content-Type: ** application/json
+|Yes|query criteria|<<Criteria>>
 
-[options="header"]
 |=======================
-| Status Code | Reason      | Response Model
-| 200    | Success |  - 
-| 500    | Internal server error |  - 
-
-|=======================
-
-{empty} +
-
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
 
-### /config/businesstxn/summary
 
+==============================================
 
-#### GET
+[[GET__analytics_trace_completion_percentiles]]
+*Endpoint GET `/analytics/trace/completion/percentiles`*
 
+NOTE: *Get the trace completion percentiles associated with criteria* +
 
 
-Retrieve the business transaction summaries
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
-##### Request
+|=======================
 
 
-**Content-Type: ** application/json
 
+*Response*
 
-[options="header"]
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
+|Status Code|Reason|Response Model
 
+|200|Success|<<Percentiles>>
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
- |Hawkular-Tenant|header|no|
- | - |
 
-    
-            string 
-    
 
 
+==============================================
 
+[[GET__analytics_trace_completion_property__property_]]
+*Endpoint GET `/analytics/trace/completion/property/{property}`*
 
+NOTE: *Get the trace completion property details associated with criteria* +
 
 
-|=======================
 
 
+*Path parameters*
 
-##### Response
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
-**Content-Type: ** application/json
+|property|Yes|property|string|-|-
 
-[options="header"]
 |=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
 
-|=======================
 
-{empty} +
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
 
 
+==============================================
 
+[[POST__analytics_trace_completion_property__property_]]
+*Endpoint POST `/analytics/trace/completion/property/{property}`*
 
-### /config/businesstxn/validate
+NOTE: *Get the trace completion property details associated with criteria* +
 
 
 
 
+*Path parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
-#### POST
+|property|Yes|property|string|-|-
 
+|=======================
 
 
 
-Validate the business transaction configuration
+*Body*
 
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
 
-##### Request
 
+*Response*
 
-**Content-Type: ** application/json
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
+
 
 
+==============================================
 
 
 
 
- |Hawkular-Tenant|header|no|
- | - |
+==============================================
 
-    
-            string 
-    
+[[GET__analytics_trace_completion_statistics]]
+*Endpoint GET `/analytics/trace/completion/statistics`*
 
+NOTE: *Get the trace completion timeseries statistics associated with criteria* +
 
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
+|faults|No|faults|string|-|-
 
+|=======================
 
-##### Response
 
-**Content-Type: ** application/json
 
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | Array[<<,>>]
-| 500    | Internal server error |  - 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
+|Status Code|Reason|Response Model
 
-{empty} +
+|200|Success|array of object
+|500|Internal server error|-
 
-
+|=======================
 
 
 
+==============================================
 
 
 
 
+==============================================
 
+[[POST__analytics_trace_completion_statistics]]
+*Endpoint POST `/analytics/trace/completion/statistics`*
 
+NOTE: *Get the trace completion timeseries statistics associated with criteria* +
 
 
 
 
+*Query parameters*
 
-### /config/collector
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
 
-#### GET
+|=======================
 
 
 
-Retrieve the collector configuration for the optionally specified host and server
+*Body*
 
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
+|=======================
 
 
-##### Request
 
+*Response*
 
-**Content-Type: ** application/json
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
 
 
 
+==============================================
 
 
- |Hawkular-Tenant|header|no|
- | - |
 
-    
-            string 
-    
 
+==============================================
 
+[[GET__analytics_unboundendpoints]]
+*Endpoint GET `/analytics/unboundendpoints`*
 
+NOTE: *Identify the unbound endpoints* +
 
 
 
 
- |type|query|no|optional type
- | - |
+*Query parameters*
 
-    
-            string 
-    
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|startTime|No|optional 'start' time, default 1 hour before current time|integer|int64|-
+|endTime|No|optional 'end' time, default current time|integer|int64|-
+|compress|No|compress list to show common patterns|boolean|-|-
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |host|query|no|optional host name
- | - |
+|200|Success|array of object
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
+=== config
+. link:#++GET__config_businesstxn_full++[Retrieve the business transaction configurations, changed since an optional specified time]
+. link:#++POST__config_businesstxn_full++[Add or update the business transaction configurations]
+. link:#++DELETE__config_businesstxn_full__name_++[Remove the business transaction configuration with the specified name]
+. link:#++GET__config_businesstxn_full__name_++[Retrieve the business transaction configuration for the specified name]
+. link:#++PUT__config_businesstxn_full__name_++[Add or update the business transaction configuration for the specified name]
+. link:#++GET__config_businesstxn_summary++[Retrieve the business transaction summaries]
+. link:#++POST__config_businesstxn_validate++[Validate the business transaction configuration]
+. link:#++GET__config_collector++[Retrieve the collector configuration for the optionally specified host and server]
 
 
- |server|query|no|optional server name
- | - |
+==============================================
 
-    
-            string 
-    
+[[GET__config_businesstxn_full]]
+*Endpoint GET `/config/businesstxn/full`*
 
+NOTE: *Retrieve the business transaction configurations, changed since an optional specified time* +
 
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|updated|No|updated since|integer|int64|-
 
+|=======================
 
-##### Response
 
-**Content-Type: ** application/json
 
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | <<CollectorConfiguration,CollectorConfiguration>>
-| 500    | Internal server error |  - 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-
-{empty} +
-
+|Status Code|Reason|Response Model
 
+|200|Success|object
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
 
 
+==============================================
 
+[[POST__config_businesstxn_full]]
+*Endpoint POST `/config/businesstxn/full`*
 
+NOTE: *Add or update the business transaction configurations* +
 
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
-### /fragments
+|=======================
 
 
-#### GET
 
+==============================================
 
 
-Query trace fragments associated with criteria
 
 
+==============================================
 
+[[DELETE__config_businesstxn_full__name_]]
+*Endpoint DELETE `/config/businesstxn/full/{name}`*
 
+NOTE: *Remove the business transaction configuration with the specified name* +
 
-##### Request
 
 
-**Content-Type: ** application/json
 
+*Path parameters*
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|name|Yes|business transaction name|string|-|-
 
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
-
-
-
-
+|=======================
 
 
 
- |businessTransaction|query|no|trace name
- | - |
+*Response*
 
-    
-            string 
-    
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|-
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
- |startTime|query|no|retrieve traces after this time, millisecond since epoch
- |0|
 
-    
-            integer (int64)
-    
 
+==============================================
 
+[[GET__config_businesstxn_full__name_]]
+*Endpoint GET `/config/businesstxn/full/{name}`*
 
+NOTE: *Retrieve the business transaction configuration for the specified name* +
 
 
 
 
- |endTime|query|no|retrieve traces before this time, millisecond since epoch
- |0|
+*Path parameters*
 
-    
-            integer (int64)
-    
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|name|Yes|business transaction name|string|-|-
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |properties|query|no|retrieve traces with these properties, defined as a comma separated list of name|value pairs
- | - |
+|200|Success|<<BusinessTxnConfig>>
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |correlations|query|no|retrieve traces with these correlation identifiers, defined as a comma separated list of scope|value pairs
- | - |
+==============================================
 
-    
-            string 
-    
+[[PUT__config_businesstxn_full__name_]]
+*Endpoint PUT `/config/businesstxn/full/{name}`*
 
+NOTE: *Add or update the business transaction configuration for the specified name* +
 
 
 
 
+*Path parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|name|Yes|business transaction name|string|-|-
 
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | <<Trace,Trace>>
-| 500    | Internal server error |  - 
-
 |=======================
 
-{empty} +
 
 
+*Response*
 
-
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
+|=======================
 
-#### POST
 
 
+==============================================
 
 
-Add a list of trace fragments
 
 
+==============================================
 
+[[GET__config_businesstxn_summary]]
+*Endpoint GET `/config/businesstxn/summary`*
 
+NOTE: *Retrieve the business transaction summaries* +
 
-##### Request
 
 
-**Content-Type: ** application/json
 
+*Response*
 
-[options="header"]
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
+|Status Code|Reason|Response Model
 
+|200|Success|array of object
+|500|Internal server error|-
 
-
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |body|body|yes|List of traces
- | - |
+==============================================
 
-    Array[<<Trace,Trace>>]
-    
+[[POST__config_businesstxn_validate]]
+*Endpoint POST `/config/businesstxn/validate`*
 
+NOTE: *Validate the business transaction configuration* +
 
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
 |=======================
-
-
+|Status Code|Reason|Response Model
 
-##### Response
+|200|Success|array of object
+|500|Internal server error|-
 
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Adding traces succeeded. |  - 
-| 500    | Unexpected error happened while storing the trace fragments |  - 
-
 |=======================
 
-{empty} +
 
 
+==============================================
 
 
 
 
+==============================================
 
+[[GET__config_collector]]
+*Endpoint GET `/config/collector`*
 
+NOTE: *Retrieve the collector configuration for the optionally specified host and server* +
 
 
 
 
+*Query parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|type|No|optional type|string|-|-
+|host|No|optional host name|string|-|-
+|server|No|optional server name|string|-|-
 
+|=======================
 
-### /fragments/query
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|<<CollectorConfiguration>>
+|500|Internal server error|-
 
+|=======================
 
-#### POST
 
 
+==============================================
 
 
-Query trace fragments associated with criteria
+=== fragments
+. link:#++GET__fragments++[Query trace fragments associated with criteria]
+. link:#++POST__fragments++[Add a list of trace fragments]
+. link:#++POST__fragments_query++[Query trace fragments associated with criteria]
+. link:#++GET__fragments__id_++[Retrieve trace fragment for specified id]
 
 
+==============================================
 
+[[GET__fragments]]
+*Endpoint GET `/fragments`*
 
+NOTE: *Query trace fragments associated with criteria* +
 
-##### Request
 
 
-**Content-Type: ** application/json
 
+*Query parameters*
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
-
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|businessTransaction|No|trace name|string|-|-
+|startTime|No|retrieve traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|retrieve traces before this time, millisecond since epoch|integer|int64|-
+|properties|No|retrieve traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|correlations|No|retrieve traces with these correlation identifiers, defined as a comma separated list of scope|value pairs|string|-|-
 
-
-
-
- |Hawkular-Tenant|header|no|
- | - |
-
-    
-            string 
-    
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success|<<Trace>>
+|500|Internal server error|-
 
+|=======================
 
- |body|body|yes|query criteria
- | - |
 
-    
-    <<Criteria,Criteria>>
 
+==============================================
 
 
 
 
+==============================================
 
-|=======================
+[[POST__fragments]]
+*Endpoint POST `/fragments`*
 
+NOTE: *Add a list of trace fragments* +
 
 
-##### Response
 
-**Content-Type: ** application/json
 
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success | <<Trace,Trace>>
-| 500    | Internal server error |  - 
+*Body*
 
+[cols="^20,55,^25", options="header"]
 |=======================
-
-{empty} +
-
-
-
-
-
-
+|Required|Description|Data Type
 
+|Yes|List of traces|array of <<Trace>>
 
+|=======================
 
 
 
+*Response*
 
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Adding traces succeeded.|-
+|500|Unexpected error happened while storing the trace fragments|-
 
+|=======================
 
 
-### /fragments/{id}
 
+==============================================
 
-#### GET
 
 
 
-Retrieve trace fragment for specified id
+==============================================
 
+[[POST__fragments_query]]
+*Endpoint POST `/fragments/query`*
 
+NOTE: *Query trace fragments associated with criteria* +
 
 
 
-##### Request
 
+*Body*
 
-**Content-Type: ** application/json
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
 
+|Yes|query criteria|<<Criteria>>
 
-[options="header"]
 |=======================
-|Parameter|Located in|Required|Description|Default|Schema
 
 
 
+*Response*
 
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
- |Hawkular-Tenant|header|no|
- | - |
+|200|Success|<<Trace>>
+|500|Internal server error|-
 
-    
-            string 
-    
+|=======================
 
 
 
+==============================================
 
 
 
 
- |id|path|yes|id of required trace
- | - |
+==============================================
 
-    
-            string 
-    
+[[GET__fragments__id_]]
+*Endpoint GET `/fragments/{id}`*
 
+NOTE: *Retrieve trace fragment for specified id* +
 
 
 
 
+*Path parameters*
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-
+|Parameter|Required|Description|Type|Format|Allowable Values
 
+|id|Yes|id of required trace|string|-|-
 
-##### Response
-
-**Content-Type: ** application/json
-
-[options="header"]
-|=======================
-| Status Code | Reason      | Response Model
-| 200    | Success, trace fragment found and returned | <<Trace,Trace>>
-| 404    | Unknown trace fragment id |  - 
-| 500    | Internal server error |  - 
-
 |=======================
-
-{empty} +
-
-
-
 
 
 
+*Response*
 
-
-
-
-
-
-
-
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
 
+|200|Success, trace fragment found and returned|<<Trace>>
+|404|Unknown trace fragment id|-
+|500|Internal server error|-
 
+|=======================
 
 
 
+==============================================
 
 
 == Data Types
-
-{empty} +
-
 
 
 
 [[AddContentAction]]
 === AddContentAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|expression|No|-|null|-|-
+|name|No|-|string|-|-
+|type|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[AddCorrelationIdAction]]
 === AddCorrelationIdAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|expression|No|-|null|-|-
+|scope|No|-|string|-|Global, Local, Interaction
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[AssertComplete]]
 === AssertComplete
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
-|=======================
-| Name | Type | Required | Description
-
-|=======================
-
-{empty} +
-{empty} +
-
-
-
-
-
+Inherits: <<InstrumentAction>>
 
 [[BusinessTxnConfig]]
 === BusinessTxnConfig
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|level|
-                    
-                    string
-                |
-optional|-
-
-|description|
-                    
-                    string
-                |
-optional|-
-
-|filter|
-                    <<Filter,Filter>>
-                    
-                |
-optional|-
-
-|processors|
-                
-                    array[<<Processor,Processor>>]
-                
-                
-                |
-optional|-
-
-|lastUpdated|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|deleted|
-                    
-                    boolean
-                |
-optional|-
+|deleted|No|-|boolean|-|-
+|description|No|-|string|-|-
+|filter|No|-|null|-|-
+|lastUpdated|No|-|integer|int64|-
+|level|No|-|string|-|Ignore, None, All
+|processors|No|-|array of <<Processor>>|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[CollectorConfiguration]]
 === CollectorConfiguration
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|properties|
-                    
-                    object
-                |
-optional|-
-
-|instrumentation|
-                    
-                    object
-                |
-optional|-
-
-|businessTransactions|
-                    
-                    object
-                |
-optional|-
+|businessTransactions|No|-|object|-|-
+|instrumentation|No|-|object|-|-
+|properties|No|-|object|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[CompleteCorrelation]]
 === CompleteCorrelation
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|allowSpawn|No|-|boolean|-|-
+|idExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Component]]
 === Component
-(_Derived from_ <<InteractionNode,InteractionNode>>)
 
-[options="header"]
+Inherits: <<InteractionNode>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|componentType|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Consumer]]
 === Consumer
-(_Derived from_ <<InteractionNode,InteractionNode>>)
 
-[options="header"]
+Inherits: <<InteractionNode>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|endpointType|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[ContainerNode]]
 === ContainerNode
-(_Derived from_ <<Node,Node>>)
 
-[options="header"]
+Inherits: <<Node>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|nodes|No|-|array of <<Node>>|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Content]]
 === Content
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|type|
-                    
-                    string
-                |
-optional|-
-
-|value|
-                    
-                    string
-                |
-optional|-
+|type|No|-|string|-|-
+|value|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Correlate]]
 === Correlate
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|idExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[CorrelationIdentifier]]
 === CorrelationIdentifier
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|value|
-                    
-                    string
-                |
-optional|-
-
-|scope|
-                    
-                    string
-                |
-optional|-
+|scope|No|-|string|-|Global, Local, Interaction
+|value|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Criteria]]
 === Criteria
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|startTime|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|endTime|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|businessTransaction|
-                    
-                    string
-                |
-optional|-
-
-|properties|
-                
-                    array[<<PropertyCriteria,PropertyCriteria>>]
-                
-                
-                |
-optional|-
-
-|correlationIds|
-                
-                    array[<<CorrelationIdentifier,CorrelationIdentifier>>]
-                
-                
-                |
-optional|-
-
-|faults|
-                
-                    array[<<FaultCriteria,FaultCriteria>>]
-                
-                
-                |
-optional|-
-
-|hostName|
-                    
-                    string
-                |
-optional|-
-
-|upperBound|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|lowerBound|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|principal|
-                    
-                    string
-                |
-optional|-
-
-|timeout|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|maxResponseSize|
-                    
-                    integer (int32)
-                |
-optional|-
+|businessTransaction|No|-|string|-|-
+|correlationIds|No|-|array of <<CorrelationIdentifier>>|-|-
+|endTime|No|-|integer|int64|-
+|faults|No|-|array of <<FaultCriteria>>|-|-
+|hostName|No|-|string|-|-
+|lowerBound|No|-|integer|int64|-
+|maxResponseSize|No|-|integer|int32|-
+|principal|No|-|string|-|-
+|properties|No|-|array of <<PropertyCriteria>>|-|-
+|startTime|No|-|integer|int64|-
+|timeout|No|-|integer|int64|-
+|upperBound|No|-|integer|int64|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[EvaluateURIAction]]
 === EvaluateURIAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|template|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Expression]]
 === Expression
 
 
-[options="header"]
-|=======================
-| Name | Type | Required | Description
-
-|=======================
-
-{empty} +
-{empty} +
-
-
-
-
-
-
 [[FaultCriteria]]
 === FaultCriteria
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|value|
-                    
-                    string
-                |
-optional|-
-
-|excluded|
-                    
-                    boolean
-                |
-optional|-
+|operator|No|-|string|-|HAS, HASNOT, EQ, NE, GT, GTE, LT, LTE
+|value|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Filter]]
 === Filter
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|inclusions|
-                
-                array[string]
-                |
-optional|-
-
-|exclusions|
-                
-                array[string]
-                |
-optional|-
+|exclusions|No|-|array of string|-|-
+|inclusions|No|-|array of string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[FreeFormAction]]
 === FreeFormAction
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|action|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[IgnoreNode]]
 === IgnoreNode
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
-|=======================
-| Name | Type | Required | Description
-
-|=======================
-
-{empty} +
-{empty} +
-
-
-
-
-
+Inherits: <<InstrumentAction>>
 
 [[InitiateCorrelation]]
 === InitiateCorrelation
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|idExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[InstrumentAction]]
 === InstrumentAction
 
 
-[options="header"]
-|=======================
-| Name | Type | Required | Description
-
-|=======================
-
-{empty} +
-{empty} +
-
-
-
-
-
-
 [[InstrumentBind]]
 === InstrumentBind
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|name|
-                    
-                    string
-                |
-optional|-
-
-|type|
-                    
-                    string
-                |
-optional|-
-
-|expression|
-                    
-                    string
-                |
-optional|-
+|expression|No|-|string|-|-
+|name|No|-|string|-|-
+|type|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[InstrumentComponent]]
 === InstrumentComponent
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|componentTypeExpression|No|-|string|-|-
+|direction|No|-|string|-|In, Out
+|idExpression|No|-|string|-|-
+|operationExpression|No|-|string|-|-
+|uriExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[InstrumentConsumer]]
 === InstrumentConsumer
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|direction|No|-|string|-|In, Out
+|endpointTypeExpression|No|-|string|-|-
+|idExpression|No|-|string|-|-
+|operationExpression|No|-|string|-|-
+|uriExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[InstrumentProducer]]
 === InstrumentProducer
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|direction|No|-|string|-|In, Out
+|endpointTypeExpression|No|-|string|-|-
+|idExpression|No|-|string|-|-
+|operationExpression|No|-|string|-|-
+|uriExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[InstrumentRule]]
 === InstrumentRule
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|ruleName|
-                    
-                    string
-                |
-optional|-
-
-|notes|
-                
-                array[string]
-                |
-optional|-
-
-|className|
-                    
-                    string
-                |
-optional|-
-
-|interfaceName|
-                    
-                    string
-                |
-optional|-
-
-|methodName|
-                    
-                    string
-                |
-optional|-
-
-|parameterTypes|
-                
-                array[string]
-                |
-optional|-
-
-|helper|
-                    
-                    string
-                |
-optional|-
-
-|location|
-                    
-                    string
-                |
-optional|-
-
-|binds|
-                
-                    array[<<InstrumentBind,InstrumentBind>>]
-                
-                
-                |
-optional|-
-
-|condition|
-                    
-                    string
-                |
-optional|-
-
-|actions|
-                
-                    array[<<InstrumentAction,InstrumentAction>>]
-                
-                
-                |
-optional|-
-
-|fromVersion|
-                    
-                    string
-                |
-optional|-
-
-|toVersion|
-                    
-                    string
-                |
-optional|-
-
-|compile|
-                    
-                    boolean
-                |
-optional|-
+|notes|No|-|array of string|-|-
+|ruleName|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Instrumentation]]
 === Instrumentation
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|description|
-                    
-                    string
-                |
-optional|-
-
-|compile|
-                    
-                    boolean
-                |
-optional|-
-
-|rules|
-                
-                    array[<<InstrumentRule,InstrumentRule>>]
-                
-                
-                |
-optional|-
+|compile|No|-|boolean|-|-
+|description|No|-|string|-|-
+|rules|No|-|array of <<InstrumentRule>>|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[InteractionNode]]
 === InteractionNode
-(_Derived from_ <<ContainerNode,ContainerNode>>)
 
-[options="header"]
+Inherits: <<ContainerNode>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|in|No|-|null|-|-
+|out|No|-|null|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Issue]]
 === Issue
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|description|
-                    
-                    string
-                |
-optional|-
-
-|severity|
-                    
-                    string
-                |
-optional|-
+|description|No|-|string|-|-
+|severity|No|-|string|-|Error, Warning, Info
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[JSONExpression]]
 === JSONExpression
-(_Derived from_ <<Expression,Expression>>)
 
-[options="header"]
+Inherits: <<Expression>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|jsonpath|No|-|string|-|-
+|key|No|-|string|-|-
+|source|No|-|string|-|Content, Header
 
 |=======================
 
-{empty} +
-{empty} +
 
+[[JVM]]
+=== JVM
 
+Inherits: <<InstrumentRule>>
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Name|Required|Description|Type|Format|Allowable Values
 
+|actions|No|-|array of <<InstrumentAction>>|-|-
+|binds|No|-|array of <<InstrumentBind>>|-|-
+|className|No|-|string|-|-
+|compile|No|-|boolean|-|-
+|condition|No|-|string|-|-
+|fromVersion|No|-|string|-|-
+|helper|No|-|string|-|-
+|interfaceName|No|-|string|-|-
+|location|No|-|string|-|-
+|methodName|No|-|string|-|-
+|parameterTypes|No|-|array of string|-|-
+|toVersion|No|-|string|-|-
+
+|=======================
 
 
 [[LiteralExpression]]
 === LiteralExpression
-(_Derived from_ <<Expression,Expression>>)
 
-[options="header"]
+Inherits: <<Expression>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|value|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Message]]
 === Message
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|headers|
-                    
-                    object
-                |
-optional|-
-
-|content|
-                    
-                    object
-                |
-optional|-
+|content|No|-|object|-|-
+|headers|No|-|object|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Node]]
 === Node
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|type|
-                    
-                    string
-                |
-optional|-
-
-|uri|
-                    
-                    string
-                |
-optional|-
-
-|operation|
-                    
-                    string
-                |
-optional|-
-
-|baseTime|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|duration|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|fault|
-                    
-                    string
-                |
-optional|-
-
-|faultDescription|
-                    
-                    string
-                |
-optional|-
-
-|details|
-                    
-                    object
-                |
-optional|-
-
-|correlationIds|
-                
-                    array[<<CorrelationIdentifier,CorrelationIdentifier>>]
-                
-                
-                |
-optional|-
-
-|issues|
-                
-                    array[<<Issue,Issue>>]
-                
-                
-                |
-optional|-
+|baseTime|No|-|integer|int64|-
+|correlationIds|No|-|array of <<CorrelationIdentifier>>|-|-
+|details|No|-|object|-|-
+|duration|No|-|integer|int64|-
+|fault|No|-|string|-|-
+|faultDescription|No|-|string|-|-
+|issues|No|-|array of <<Issue>>|-|-
+|operation|No|-|string|-|-
+|type|No|-|string|-|Consumer, Producer, Component
+|uri|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Percentiles]]
 === Percentiles
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|percentiles|
-                    
-                    object
-                |
-optional|-
+|percentiles|No|-|object|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[ProcessContent]]
 === ProcessContent
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|direction|No|-|string|-|In, Out
+|valueExpressions|No|-|array of string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[ProcessHeaders]]
 === ProcessHeaders
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|direction|No|-|string|-|In, Out
+|headersExpression|No|-|string|-|-
+|originalType|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Processor]]
 === Processor
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|description|
-                    
-                    string
-                |
-optional|-
-
-|nodeType|
-                    
-                    string
-                |
-optional|-
-
-|direction|
-                    
-                    string
-                |
-optional|-
-
-|uriFilter|
-                    
-                    string
-                |
-optional|-
-
-|operation|
-                    
-                    string
-                |
-optional|-
-
-|faultFilter|
-                    
-                    string
-                |
-optional|-
-
-|predicate|
-                    <<Expression,Expression>>
-                    
-                |
-optional|-
-
-|actions|
-                
-                    array[<<ProcessorAction,ProcessorAction>>]
-                
-                
-                |
-optional|-
+|actions|No|-|array of <<ProcessorAction>>|-|-
+|description|No|-|string|-|-
+|direction|No|-|string|-|In, Out
+|faultFilter|No|-|string|-|-
+|nodeType|No|-|string|-|Consumer, Producer, Component
+|operation|No|-|string|-|-
+|predicate|No|-|null|-|-
+|uriFilter|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[ProcessorAction]]
 === ProcessorAction
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|description|
-                    
-                    string
-                |
-optional|-
-
-|predicate|
-                    <<Expression,Expression>>
-                    
-                |
-optional|-
+|description|No|-|string|-|-
+|predicate|No|-|null|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[ProcessorIssue]]
 === ProcessorIssue
-(_Derived from_ <<Issue,Issue>>)
 
-[options="header"]
+Inherits: <<Issue>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|action|No|-|string|-|-
+|field|No|-|string|-|-
+|processor|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Producer]]
 === Producer
-(_Derived from_ <<InteractionNode,InteractionNode>>)
 
-[options="header"]
+Inherits: <<InteractionNode>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|endpointType|No|-|string|-|-
 
 |=======================
 
-{empty} +
-{empty} +
+
+[[Property]]
+=== Property
 
 
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Name|Required|Description|Type|Format|Allowable Values
 
+|name|No|-|string|-|-
+|number|No|-|number|double|-
+|type|No|-|string|-|Text, Number
+|value|No|-|string|-|-
 
+|=======================
 
 
 [[PropertyCriteria]]
 === PropertyCriteria
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|name|
-                    
-                    string
-                |
-optional|-
-
-|value|
-                    
-                    string
-                |
-optional|-
-
-|excluded|
-                    
-                    boolean
-                |
-optional|-
+|name|No|-|string|-|-
+|operator|No|-|string|-|HAS, HASNOT, EQ, NE, GT, GTE, LT, LTE
+|value|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetBusinessTransaction]]
 === SetBusinessTransaction
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|nameExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetDetail]]
 === SetDetail
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|name|No|-|string|-|-
+|nodeType|No|-|string|-|-
+|onStack|No|-|boolean|-|-
+|valueExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetDetailAction]]
 === SetDetailAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|expression|No|-|null|-|-
+|name|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetFault]]
 === SetFault
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|descriptionExpression|No|-|string|-|-
+|nameExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetFaultAction]]
 === SetFaultAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|expression|No|-|null|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetFaultDescriptionAction]]
 === SetFaultDescriptionAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|expression|No|-|null|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetLevel]]
 === SetLevel
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|levelExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetPrincipal]]
 === SetPrincipal
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|nameExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetProperty]]
 === SetProperty
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|name|No|-|string|-|-
+|valueExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetPropertyAction]]
 === SetPropertyAction
-(_Derived from_ <<ProcessorAction,ProcessorAction>>)
 
-[options="header"]
+Inherits: <<ProcessorAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|expression|No|-|null|-|-
+|name|No|-|string|-|-
+|type|No|-|string|-|Text, Number
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[SetState]]
 === SetState
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|contextExpression|No|-|string|-|-
+|name|No|-|string|-|-
+|session|No|-|boolean|-|-
+|valueExpression|No|-|string|-|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Suppress]]
 === Suppress
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
-|=======================
-| Name | Type | Required | Description
-
-|=======================
-
-{empty} +
-{empty} +
-
-
-
-
-
+Inherits: <<InstrumentAction>>
 
 [[TextExpression]]
 === TextExpression
-(_Derived from_ <<Expression,Expression>>)
 
-[options="header"]
+Inherits: <<Expression>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|key|No|-|string|-|-
+|source|No|-|string|-|Content, Header
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Trace]]
 === Trace
 
 
-[options="header"]
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
 
-|id|
-                    
-                    string
-                |
-optional|-
-
-|startTime|
-                    
-                    integer (int64)
-                |
-optional|-
-
-|businessTransaction|
-                    
-                    string
-                |
-optional|-
-
-|principal|
-                    
-                    string
-                |
-optional|-
-
-|hostName|
-                    
-                    string
-                |
-optional|-
-
-|hostAddress|
-                    
-                    string
-                |
-optional|-
-
-|nodes|
-                
-                    array[<<Node,Node>>]
-                
-                
-                |
-optional|-
-
-|properties|
-                    
-                    object
-                |
-optional|-
+|businessTransaction|No|-|string|-|-
+|hostAddress|No|-|string|-|-
+|hostName|No|-|string|-|-
+|id|No|-|string|-|-
+|nodes|No|-|array of <<Node>>|-|-
+|principal|No|-|string|-|-
+|properties|No|-|array of <<Property>>|-|-
+|startTime|No|-|integer|int64|-
 
 |=======================
-
-{empty} +
-{empty} +
-
-
-
-
 
 
 [[Unlink]]
 === Unlink
-(_Derived from_ <<InstrumentAction,InstrumentAction>>)
 
-[options="header"]
-|=======================
-| Name | Type | Required | Description
-
-|=======================
-
-{empty} +
-{empty} +
-
-
-
-
-
+Inherits: <<InstrumentAction>>
 
 [[XMLExpression]]
 === XMLExpression
-(_Derived from_ <<Expression,Expression>>)
 
-[options="header"]
+Inherits: <<Expression>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-| Name | Type | Required | Description
+|Name|Required|Description|Type|Format|Allowable Values
+
+|key|No|-|string|-|-
+|source|No|-|string|-|Content, Header
+|xpath|No|-|string|-|-
 
 |=======================
 
-{empty} +
-{empty} +
-
-
-
-
-
-{empty} +
-{empty} +
-{empty} +

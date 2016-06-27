@@ -7,6 +7,11 @@
 .. link:installation/CLIENT.adoc[Client]
 . link:userguide/README.adoc[User Guide]
 .. link:userguide/CONSOLE.adoc[Console]
+. link:agent/README.adoc[Agent Specification]
+.. link:agent/collectorconfig.adoc[Collector Configuration]
+.. link:agent/fragmentbuilding.adoc[Trace Fragment Building]
+.. link:agent/btxnprocessing.adoc[Business Transaction Processing]
+.. link:agent/fragmentreporter.adoc[Trace Fragment Reporting]
 . link:apiref/README.adoc[API Reference]
 .. link:apiref/rest-apm.adoc[REST]
 

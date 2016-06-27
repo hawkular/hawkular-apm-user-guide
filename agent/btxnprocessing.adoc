@@ -1,0 +1,163 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+== Business Transaction Processing
+
+This section will describe how the link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] definitions are used to classify application invocations as belonging to particular _Business Transactions_, and perform specific processing based on that classification.
+
+=== Identifying a Business Transaction
+
+The link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] defines a filter with zero or more inclusion and exclusion regular expressions.
+
+The regular expressions are applied to the URI and optional operation defined in the following format:
+
+    <uri> [ '[' <operation> ']' ]
+
+If an inclusion regular expression matches to the URI/operation, then the application invocation will be classified as belonging to the business transaction name associated with the link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_].
+
+If subsequently an exclusion filter also matches, then the classification will still apply, but the particular application invocation will not be processed any further.
+
+
+=== Processor
+
+A link:../apiref/rest-apm.html#BusinessTxnConfig[_BusinessTxnConfig_] is defined with a list of link:../apiref/rest-apm.html#Processor[_Processors_]. Each processor represents a set of actions that may be performed (as discussed in the next section).
+
+However before the actions are triggered, the link:../apiref/rest-apm.html#Processor[_Processor_] defines a set of pre-conditions that must be met, which are:
+
+* Node type - the processor (and set of actions) are associated with a particular node type (i.e. Consumer, Producer or Component)
+
+* Direction - whether the activity relates to the inbound (request) communication, or outbound (response)
+
+* Optional URI filter - to further refine which URIs are relevant for this processor
+
+* Optional operation - to further refine which operations are relevant for this processor
+
+* Optional fault - to filter based on an optional fault response
+
+* Optional predicate - more specific conditional link:../apiref/rest-apm.html#Expression[_Expression_] that may relate to the headers/content being processed (see later section for expression types)
+
+
+=== Actions
+
+This section lists the set of possible actions that can be performed by a processor.
+
+Each action optionally has the following attributes:
+
+* description - A text based description of the action
+
+* predicate - A guard condition, of type link:../apiref/rest-apm.html#Expression[_Expression_], that determines whether the action is performed
+
+==== Add Content
+
+This action enables content (or part thereof) to be extracted from the application activity that has been instrumented, and added to the current node in the trace fragment.
+
+The link:../apiref/rest-apm.html#AddContentAction[_AddContentAction_] defines:
+
+* name - the name of the data within the trace fragment node
+
+* type - the type of the data within the trace fragment node
+
+* expression - the expression used to extract the data
+
+==== Add Correlation Id
+
+This action enables content (or part thereof) to be extracted from the application activity that has been instrumented, and use it to define a correlation id for the node in the trace fragment.
+
+The link:../apiref/rest-apm.html#AddCorrelationIdAction[_AddCorrelationIdAction_] defines:
+
+* scope - the scope of the correlation id, either *Global*, *Local* or *Interaction*
+
+* expression - the expression used to extract the correlation id value
+
+==== Evaluate URI
+
+This action defines a template that should be applied to the URI of the current node. If the template includes parameters, enclosed in {}, then the value associated with that portion of the URI should be extracted and defined as a property with the name defined inside the braces. The template should then be used as the URI for the node.
+
+For example, if a template is defined as:
+
+    /order/{orderId}
+
+and the inbound communication has the URI
+
+    /order/abc456
+
+then the _Consumer_ node should have the URI set to the template (i.e. /order/{orderId}), and the _Trace_ fragment should have a property *orderId = abc456*.
+
+The link:../apiref/rest-apm.html#EvaluateURIAction[_EvaluateURIAction_] defines:
+
+* template - the template definition
+
+==== Set Detail
+
+This action is used to set a detail value on the current trace fragment node. The details are used to define additional information available about the instrumented point within the application, usually specific to the technology being instrumented (e.g. HTTP headers).
+
+The link:../apiref/rest-apm.html#AddContentAction[_AddContentAction_] defines:
+
+* name - the name of the detail within the trace fragment node
+
+* expression - the expression used to extract the detail's value
+
+==== Set Fault
+
+This action is used to set the fault value on the current trace fragment node.
+
+The link:../apiref/rest-apm.html#SetFaultAction[_SetFaultAction_] defines:
+
+* expression - the expression used to determine the fault value
+
+==== Set Fault Description
+
+This action is used to set the fault description on the current trace fragment node.
+
+The link:../apiref/rest-apm.html#SetFaultDescriptionAction[_SetFaultDescriptionAction_] defines:
+
+* expression - the expression used to determine the fault description
+
+
+==== Set Property
+
+This action is used to set a property on the link:../apiref/rest-apm.html#Trace[_Trace_] fragment.
+
+The link:../apiref/rest-apm.html#SetPropertyAction[_SetPropertyAction_] defines:
+
+* name - the name of the property within the trace fragment
+
+* type - the type of the property within the trace fragment, the values are *Text* (default) and *Number*
+
+* expression - the expression used to extract the property value
+
+=== Expressions
+
+With the exception of the _Literal_ expression, all of the other expression types have the following fields in common:
+
+* source - the source of the information being evaluated, with possible values *Content* and *Header*
+
+* key - dependent upon the data source, this value will identify the 'key' if related to a header, and the array position if related to content (i.e. the message part number or method argument position - will generally be 0)
+
+==== JSON
+
+This type of expression processes JSON formatted data to extract a result. The expression is comprised of the following additional fields:
+
+* jsonpath - the http://goessner.net/articles/JsonPath/[JSONPath] expression
+
+
+==== Literal
+
+This expression type simple represents a literal value.
+
+
+==== Text
+
+This type of expression simply converts the identified data into a text format which is returned as the result. As such, it has no additional fields other than the ones to identify the data source and key.
+
+
+==== XML
+
+This type of expression processes XML formatted data to extract a result. The expression is comprised of the following additional fields:
+
+* xpath - the https://www.w3.org/TR/xpath20/[XPath] expression
+
