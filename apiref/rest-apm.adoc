@@ -117,7 +117,9 @@ Error responses may include an <<ApiError>> entity in the body.
 . link:#++GET__analytics_properties++[Get property information]
 . link:#++POST__analytics_properties++[Get property information]
 . link:#++GET__analytics_trace_completion_count++[Get the trace completion count]
+. link:#++POST__analytics_trace_completion_count++[Get the trace completion count]
 . link:#++GET__analytics_trace_completion_faultcount++[Get the number of trace instances that returned a fault]
+. link:#++POST__analytics_trace_completion_faultcount++[Get the number of trace instances that returned a fault]
 . link:#++GET__analytics_trace_completion_faults++[Get the trace completion fault details associated with criteria]
 . link:#++POST__analytics_trace_completion_faults++[Get the trace completion fault details associated with criteria]
 . link:#++GET__analytics_trace_completion_percentiles++[Get the trace completion percentiles associated with criteria]
@@ -125,6 +127,8 @@ Error responses may include an <<ApiError>> entity in the body.
 . link:#++POST__analytics_trace_completion_property__property_++[Get the trace completion property details associated with criteria]
 . link:#++GET__analytics_trace_completion_statistics++[Get the trace completion timeseries statistics associated with criteria]
 . link:#++POST__analytics_trace_completion_statistics++[Get the trace completion timeseries statistics associated with criteria]
+. link:#++GET__analytics_trace_completion_times++[Get the trace completion times associated with criteria]
+. link:#++POST__analytics_trace_completion_times++[Get the trace completion times associated with criteria]
 . link:#++GET__analytics_unboundendpoints++[Identify the unbound endpoints]
 
 
@@ -203,6 +207,8 @@ NOTE: *Get the trace communication summary statistics associated with criteria* 
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |tree|No|tree|boolean|-|-
 
@@ -303,6 +309,8 @@ NOTE: *Get the host names associated with the criteria* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 
 |=======================
@@ -390,6 +398,8 @@ NOTE: *Get the trace node timeseries statistics associated with criteria* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |interval|No|aggregation time interval (in milliseconds)|integer|int64|-
 
@@ -490,6 +500,8 @@ NOTE: *Get the trace node summary statistics associated with criteria* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 
 |=======================
@@ -577,6 +589,8 @@ NOTE: *Get principal information* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
 
@@ -665,6 +679,8 @@ NOTE: *Get property information* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
 
@@ -753,8 +769,51 @@ NOTE: *Get the trace completion count* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|integer
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[POST__analytics_trace_completion_count]]
+*Endpoint POST `/analytics/trace/completion/count`*
+
+NOTE: *Get the trace completion count* +
+
+
+
+
+*Body*
+
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
+
+|Yes|query criteria|<<Criteria>>
 
 |=======================
 
@@ -800,8 +859,51 @@ NOTE: *Get the number of trace instances that returned a fault* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|integer
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[POST__analytics_trace_completion_faultcount]]
+*Endpoint POST `/analytics/trace/completion/faultcount`*
+
+NOTE: *Get the number of trace instances that returned a fault* +
+
+
+
+
+*Body*
+
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
+
+|Yes|query criteria|<<Criteria>>
 
 |=======================
 
@@ -847,6 +949,8 @@ NOTE: *Get the trace completion fault details associated with criteria* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
 
@@ -935,6 +1039,8 @@ NOTE: *Get the trace completion percentiles associated with criteria* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
 
@@ -994,6 +1100,8 @@ NOTE: *Get the trace completion property details associated with criteria* +
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |faults|No|faults|string|-|-
 
@@ -1094,6 +1202,8 @@ NOTE: *Get the trace completion timeseries statistics associated with criteria* 
 |endTime|No|traces before this time, millisecond since epoch|integer|int64|-
 |hostName|No|host name|string|-|-
 |principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
 |properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |interval|No|aggregation time interval (in milliseconds)|integer|int64|-
 |faults|No|faults|string|-|-
@@ -1140,6 +1250,96 @@ NOTE: *Get the trace completion timeseries statistics associated with criteria* 
 |interval|No|aggregation time interval (in milliseconds)|integer|int64|-
 
 |=======================
+
+
+
+*Body*
+
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
+
+|Yes|query criteria|<<Criteria>>
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|array of object
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[GET__analytics_trace_completion_times]]
+*Endpoint GET `/analytics/trace/completion/times`*
+
+NOTE: *Get the trace completion times associated with criteria* +
+
+
+
+
+*Query parameters*
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
+
+|businessTransaction|Yes|business transaction name|string|-|-
+|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
+|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
+|hostName|No|host name|string|-|-
+|principal|No|principal|string|-|-
+|uri|No|uri|string|-|-
+|operation|No|operation|string|-|-
+|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
+|faults|No|faults|string|-|-
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|array of object
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[POST__analytics_trace_completion_times]]
+*Endpoint POST `/analytics/trace/completion/times`*
+
+NOTE: *Get the trace completion times associated with criteria* +
+
 
 
 
@@ -1518,17 +1718,101 @@ NOTE: *Retrieve the collector configuration for the optionally specified host an
 ==============================================
 
 
-=== fragments
-. link:#++GET__fragments++[Query trace fragments associated with criteria]
-. link:#++POST__fragments++[Add a list of trace fragments]
-. link:#++POST__fragments_query++[Query trace fragments associated with criteria]
-. link:#++GET__fragments__id_++[Retrieve trace fragment for specified id]
+=== traces
+. link:#++GET__traces_complete__id_++[Retrieve end to end trace for specified id]
+. link:#++POST__traces_fragments++[Add a list of trace fragments]
+. link:#++GET__traces_fragments_search++[Query trace fragments associated with criteria]
+. link:#++POST__traces_fragments_search++[Query trace fragments associated with criteria]
+. link:#++GET__traces_fragments__id_++[Retrieve trace fragment for specified id]
 
 
 ==============================================
 
-[[GET__fragments]]
-*Endpoint GET `/fragments`*
+[[GET__traces_complete__id_]]
+*Endpoint GET `/traces/complete/{id}`*
+
+NOTE: *Retrieve end to end trace for specified id* +
+
+
+
+
+*Path parameters*
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
+
+|id|Yes|id of required trace|string|-|-
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success, trace found and returned|<<Trace>>
+|404|Unknown trace id|-
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[POST__traces_fragments]]
+*Endpoint POST `/traces/fragments`*
+
+NOTE: *Add a list of trace fragments* +
+
+
+
+
+*Body*
+
+[cols="^20,55,^25", options="header"]
+|=======================
+|Required|Description|Data Type
+
+|Yes|List of traces|array of <<Trace>>
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Adding traces succeeded.|-
+|500|Unexpected error happened while storing the trace fragments|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[GET__traces_fragments_search]]
+*Endpoint GET `/traces/fragments/search`*
 
 NOTE: *Query trace fragments associated with criteria* +
 
@@ -1572,49 +1856,8 @@ NOTE: *Query trace fragments associated with criteria* +
 
 ==============================================
 
-[[POST__fragments]]
-*Endpoint POST `/fragments`*
-
-NOTE: *Add a list of trace fragments* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|List of traces|array of <<Trace>>
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Adding traces succeeded.|-
-|500|Unexpected error happened while storing the trace fragments|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__fragments_query]]
-*Endpoint POST `/fragments/query`*
+[[POST__traces_fragments_search]]
+*Endpoint POST `/traces/fragments/search`*
 
 NOTE: *Query trace fragments associated with criteria* +
 
@@ -1654,8 +1897,8 @@ NOTE: *Query trace fragments associated with criteria* +
 
 ==============================================
 
-[[GET__fragments__id_]]
-*Endpoint GET `/fragments/{id}`*
+[[GET__traces_fragments__id_]]
+*Endpoint GET `/traces/fragments/{id}`*
 
 NOTE: *Retrieve trace fragment for specified id* +
 
@@ -1668,7 +1911,7 @@ NOTE: *Retrieve trace fragment for specified id* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|id|Yes|id of required trace|string|-|-
+|id|Yes|id of required trace fragment|string|-|-
 
 |=======================
 
@@ -1681,8 +1924,8 @@ NOTE: *Retrieve trace fragment for specified id* +
 |=======================
 |Status Code|Reason|Response Model
 
-|200|Success, trace fragment found and returned|<<Trace>>
-|404|Unknown trace fragment id|-
+|200|Success, trace found and returned|<<Trace>>
+|404|Unknown fragment id|-
 |500|Internal server error|-
 
 |=======================
@@ -1722,7 +1965,7 @@ Inherits: <<ProcessorAction>>
 |Name|Required|Description|Type|Format|Allowable Values
 
 |expression|No|-|<<Expression>>|-|-
-|scope|No|-|string|-|Global, Local, Interaction
+|scope|No|-|string|-|Interaction
 
 |=======================
 
@@ -1858,7 +2101,7 @@ Inherits: <<InstrumentAction>>
 |=======================
 |Name|Required|Description|Type|Format|Allowable Values
 
-|scope|No|-|string|-|Global, Local, Interaction
+|scope|No|-|string|-|Interaction
 |value|No|-|string|-|-
 
 |=======================
@@ -1879,14 +2122,21 @@ Inherits: <<InstrumentAction>>
 |hostName|No|-|string|-|-
 |lowerBound|No|-|integer|int64|-
 |maxResponseSize|No|-|integer|int32|-
+|operation|No|-|string|-|-
 |principal|No|-|string|-|-
 |properties|No|-|array of <<PropertyCriteria>>|-|-
 |startTime|No|-|integer|int64|-
 |timeout|No|-|integer|int64|-
 |upperBound|No|-|integer|int64|-
+|uri|No|-|string|-|-
 
 |=======================
 
+
+[[Deactivate]]
+=== Deactivate
+
+Inherits: <<InstrumentAction>>
 
 [[EvaluateURIAction]]
 === EvaluateURIAction
@@ -2183,6 +2433,7 @@ Inherits: <<Expression>>
 |faultDescription|No|-|string|-|-
 |issues|No|-|array of <<Issue>>|-|-
 |operation|No|-|string|-|-
+|properties|No|-|array of <<Property>>|-|-
 |type|No|-|string|-|Consumer, Producer, Component
 |uri|No|-|string|-|-
 
@@ -2307,7 +2558,7 @@ Inherits: <<InteractionNode>>
 
 |name|No|-|string|-|-
 |number|No|-|number|double|-
-|type|No|-|string|-|Text, Number
+|type|No|-|string|-|Text, Number, Boolean, Binary
 |value|No|-|string|-|-
 
 |=======================
@@ -2471,7 +2722,7 @@ Inherits: <<ProcessorAction>>
 
 |expression|No|-|<<Expression>>|-|-
 |name|No|-|string|-|-
-|type|No|-|string|-|Text, Number
+|type|No|-|string|-|Text, Number, Boolean, Binary
 
 |=======================
 
@@ -2527,7 +2778,6 @@ Inherits: <<Expression>>
 |id|No|-|string|-|-
 |nodes|No|-|array of <<Node>>|-|-
 |principal|No|-|string|-|-
-|properties|No|-|array of <<Property>>|-|-
 |startTime|No|-|integer|int64|-
 
 |=======================
