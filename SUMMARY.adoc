@@ -4,7 +4,8 @@
 
 . link:installation/README.adoc[Installation]
 .. link:installation/SERVER.adoc[Server]
-.. link:installation/CLIENT.adoc[Client]
+.. link:installation/JVMAGENT.adoc[JVM Agent]
+.. link:installation/ZIPKIN.adoc[Zipkin Gateway]
 . link:userguide/README.adoc[User Guide]
 .. link:userguide/CONSOLE.adoc[Console]
 . link:agent/README.adoc[Agent Specification]

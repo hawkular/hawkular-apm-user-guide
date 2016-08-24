@@ -1,0 +1,13 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+
+The Zipkin gateway is an integral part of the Hawkular APM server.
+
+All you will need to do to report information from the Zipkin instrumented applications, to the Hawkular APM server, is simply use the Hawkular APM server URL instead of the Zipkin URL.
+
+

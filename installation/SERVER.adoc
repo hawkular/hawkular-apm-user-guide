@@ -20,15 +20,34 @@ Unpack the zip file.
 
 == Starting the Server
 
-The distribution contains some environment scripts for configuring the client-side collection mechanism. These scripts by default will report the information to _localhost_ and _port 8180_ (to avoid conflict with other web apps that may be using the default _8080 port_).
+When the server is first unpacked, it will not be configured with any users. Therefore the first command to perform from the distribution's root folder is:
 
-Therefore when starting the Hawkular APM server we will need to specify a port offset. The command to start the server, from the root folder of the distribution, will be:
+[source,shell]
+----
+bin/add-user.sh
+----
+
+This script will ask a series of questions before creating the user. Ensure that the user is an "Application User" (option b). When asked for the comma separated list of groups, enter:
+
+----
+read-write,read-only
+----
+
+This will enable the user to be able to report trace fragment information, and also view the results in the UI.
+
+If using the server to display information captured using zipkin client libraries, then the username/password will only be required to access the user interface (UI).
+
+However, if intending to use the _non-intrusive_ java agent based instrumentation mechanism, to observe the activity within a JVM based application, then an example script called _apm/setenv.sh_ is provided to get you up and running quickly. If you intend to use this script, it is preconfigured with a default user (*_jdoe_* with password *_password_*), so you should use these credentials when adding the user to the server.
+
+NOTE: When attempting to use the password *password*, the server will ask you if you are sure, as this is not a secure password to use. Just type 'yes' and it will continue as normal.
+
+When starting the Hawkular APM server we may need to specify a port offset to avoid conflicts with other applications using the default port 8080. The command to start the server, from the root folder of the distribution, will be:
 
 [source,shell]
 ----
 bin/standalone.sh -Djboss.socket.binding.port-offset=100
 ----
 
-When the server is initially started, a default user profile is included within the distribution that includes a single user *_jdoe_* with password *_password_*.
+NOTE: The script _apm/setenv.sh_ is preconfigured to use a URL for an APM server on the localhost with port 8180, and therefore a port offset of 100 should be used if intending to use this script when instrumenting applications.
 
 
