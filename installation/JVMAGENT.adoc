@@ -19,10 +19,12 @@ To configure a client environment, simply run the *_setenv.sh_* script:
 
 [source,shell]
 ----
-. <APM_DISTRIBUTION>/apm/setenv.sh
+. <APM_DISTRIBUTION>/apm/setenv.sh <port>
 ----
 
 This sets the _JAVA_OPTS_ environment variable with the appropriate arguments to instrument any technology for which instrumentation rules have been defined.
+
+The _port_ parameter defines the local port upon which which the APM server has been started. For example, if a port offset of 100 was used, then pass the port parameter as 8180.
 
 === Properties
 
