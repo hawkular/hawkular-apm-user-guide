@@ -2,17 +2,25 @@
 
 = Summary
 
-. link:installation/README.adoc[Installation]
-.. link:installation/SERVER.adoc[Server]
-.. link:installation/JVMAGENT.adoc[JVM Agent]
-.. link:installation/ZIPKIN.adoc[Zipkin Gateway]
-. link:userguide/README.adoc[User Guide]
-.. link:userguide/CONSOLE.adoc[Console]
-. link:agent/README.adoc[Agent Specification]
-.. link:agent/collectorconfig.adoc[Collector Configuration]
-.. link:agent/fragmentbuilding.adoc[Trace Fragment Building]
-.. link:agent/btxnprocessing.adoc[Business Transaction Processing]
-.. link:agent/fragmentreporter.adoc[Trace Fragment Reporting]
+. link:application/README.adoc[Instrumenting an Application]
+.. link:application/JVMAGENT.adoc[JVM Agent]
+.. link:application/ZIPKIN.adoc[Zipkin]
+.. link:application/OPENTRACING.adoc[Opentracing]
+.. link:application/DIRECT.adoc[Report directly to APM server]
+
+. link:analysis/README.adoc[Analysing Captured Application Data]
+.. link:analysis/SERVER.adoc[Running the APM Server]
+.. link:analysis/CONSOLE.adoc[Console]
+.. link:analysis/ALERTS.adoc[Managing Alerts]
+
 . link:apiref/README.adoc[API Reference]
 .. link:apiref/rest-apm.adoc[REST]
+
+// Deprecated section
+// . link:agent/README.adoc[Agent Specification]
+// .. link:agent/collectorconfig.adoc[Collector Configuration]
+// .. link:agent/fragmentbuilding.adoc[Trace Fragment Building]
+// .. link:agent/btxnprocessing.adoc[Business Transaction Processing]
+// .. link:agent/fragmentreporter.adoc[Trace Fragment Reporting]
+
 
