@@ -1,0 +1,11 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+
+TODO: Information about integration with alerts
+
+
