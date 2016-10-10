@@ -2,6 +2,8 @@
 
 = Summary
 
+. link:quickstart/README.adoc[Quickstart]
+
 . link:application/README.adoc[Instrumenting an Application]
 .. link:application/JVMAGENT.adoc[JVM Agent]
 .. link:application/ZIPKIN.adoc[Zipkin]
