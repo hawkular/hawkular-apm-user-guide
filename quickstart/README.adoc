@@ -1,0 +1,107 @@
+:imagesdir: ../images
+
+== Starting the Server
+
+=== Docker
+
+To start and bind to localhost:8080
+
+[source,shell]
+----
+docker run -p 8080:8080 jboss/hawkular-apm-server-dev
+----
+
+This docker image starts a server with preconfigured user `jdoe` and password `password`.
+
+=== Binary Release
+
+Download and unpack the latest `hawkular-apm-dist` distribution from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
+
+From the distribution's root folder:
+
+[source,shell]
+----
+bin/add-user.sh -a -u jdoe -p password -g read-write,read-only
+bin/standalone.sh
+----
+
+
+=== Source Build
+
+[source,shell]
+----
+git clone https://github.com/hawkular/hawkular-apm.git
+cd hawkular-apm
+mvn clean install -Pdev  // <1>
+cd dist/target/hawkular-apm-dist-${version}
+bin/standalone.sh
+----
+<1> The `-Pdev` argument will build a development distribution containing the default user `jdoe` with password `password`.
+
+
+== Instrumenting your Application
+
+=== Explicit instrumentation
+
+* Zipkin
+
+If your applcation is instrumented using http://zipkin.io/pages/existing_instrumentations.html[Zipkin compliant client libraries] then simply update your Zipkin URL to point to the Hawkular APM server (e.g. http://localhost:8080 if running all on the local machine).
+
+
+* Opentracing
+
+NOTE: Currently restricted to Java support.
+
+If your application is instrumented using the http://opentracing.io[Opentracing API], then include the following dependencies in your `pom.xml`:
+
+[source,xml]
+----
+    <dependency>
+      <groupId>org.hawkular.apm</groupId>
+      <artifactId>hawkular-apm-client-opentracing</artifactId>
+      <version>${version.org.hawkular.apm}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hawkular.apm</groupId>
+      <artifactId>hawkular-apm-trace-publisher-rest-client</artifactId>
+      <version>${version.org.hawkular.apm}</version>
+    </dependency>
+----
+
+
+=== Non-intrusive instrumentation using Java Agent
+
+==== Using binary distribution
+
+[source,shell]
+----
+. ${APM_HOME}/apm/setenv.sh <port>
+----
+
+From the same command window, run your Java application supplying the `JAVA_OPTS` environment variable.
+
+==== Downloading the agent
+
+Download the latest `hawkular-apm-agent.jar` from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
+
+[source,shell]
+----
+export HAWKULAR_APM_URI=http://localhost:8080 // <1>
+export HAWKULAR_APM_USERNAME=jdoe // <2>
+export HAWKULAR_APM_PASSWORD=password // <2>
+export JAVA_OPTS="-javaagent:${PATH_TO}/hawkular-apm-agent.jar" // <3>
+
+# Wildfly specific
+export JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman,org.hawkular.apm.instrumenter,org.hawkular.apm.client.collector"
+
+java $JAVA_OPTS ....... // <4>
+----
+
+<1> Set this URL to point to the APM server.
+<2> Assumes the default username and password have been configured in the APM server.
+<3> Must define the path to the `hawkular-apm-agent.jar`
+<4> Add the `$JAVA_OPTS` environment variable to your Java command line
+
+
+
+

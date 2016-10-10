@@ -1,4 +1,0 @@
-:imagesdir: ../images
-
-This section describes how to install the Hawkular APM server, configure the JVM agent for non-intrusive instrumentation, and configure Zipkin instrumented applications to report their information to the server.
-
