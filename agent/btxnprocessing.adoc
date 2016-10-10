@@ -95,7 +95,7 @@ The link:../apiref/rest-apm.html#EvaluateURIAction[_EvaluateURIAction_] defines:
 
 This action is used to set a detail value on the current trace fragment node. The details are used to define additional information available about the instrumented point within the application, usually specific to the technology being instrumented (e.g. HTTP headers).
 
-The link:../apiref/rest-apm.html#AddContentAction[_AddContentAction_] defines:
+The link:../apiref/rest-apm.html#SetDetailAction[_SetDetailAction_] defines:
 
 * name - the name of the detail within the trace fragment node
 
