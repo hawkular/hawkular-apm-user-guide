@@ -19,12 +19,12 @@ To configure a client environment, simply run the *_setenv.sh_* script:
 
 [source,shell]
 ----
-. <APM_DISTRIBUTION>/apm/setenv.sh <port>
+. ${APM_HOME}/apm/setenv.sh port
 ----
 
 This sets the _JAVA_OPTS_ environment variable with the appropriate arguments to instrument any technology for which instrumentation rules have been defined.
 
-The _port_ parameter defines the local port upon which which the APM server has been started. For example, if a port offset of 100 was used, then pass the port parameter as 8180.
+The _port_ parameter defines the local port upon which which the APM server has been started, usually `8080`.
 
 === Properties
 
@@ -34,7 +34,7 @@ will override the environment variables. The property names are:
 |===
 | Name | Description
 
-| HAWKULAR_APM_URI | The URI for the APM server. The default value defined in the _setenv.sh_ script is _http://localhost:8180_.
+| HAWKULAR_APM_URI | The URI for the APM server. The default value defined in the _setenv.sh_ script is the supplied port on the `localhost`.
 | HAWKULAR_APM_USERNAME | The username to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_jdoe_*.
 | HAWKULAR_APM_PASSWORD | The password to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_password_*.
 | HAWKULAR_APM_CONFIG_REFRESH | Optional business transaction configuration refresh interval (in seconds).
