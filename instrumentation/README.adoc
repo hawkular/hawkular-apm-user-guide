@@ -1,0 +1,5 @@
+:imagesdir: ../images
+
+This section describes how to instrument your applications to capture information that can be used to analyse their use.
+
+
