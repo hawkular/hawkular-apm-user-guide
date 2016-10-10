@@ -22,8 +22,9 @@ From the distribution's root folder:
 [source,shell]
 ----
 bin/add-user.sh -a -u jdoe -p password -g read-write,read-only
-bin/standalone.sh
+bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <1>
 ----
+<1> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
 === Source Build
@@ -32,11 +33,12 @@ bin/standalone.sh
 ----
 git clone https://github.com/hawkular/hawkular-apm.git
 cd hawkular-apm
-mvn clean install -Pdev  // <1>
+mvn clean install -Pdev -DskipTests // <1>
 cd dist/target/hawkular-apm-dist-${version}
-bin/standalone.sh
+bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 ----
 <1> The `-Pdev` argument will build a development distribution containing the default user `jdoe` with password `password`.
+<2> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
 == Instrumenting your Application
@@ -71,16 +73,17 @@ If your application is instrumented using the http://opentracing.io[Opentracing 
 
 === Non-intrusive instrumentation using Java Agent
 
-==== Using binary distribution
+==== Using script from binary release
 
 [source,shell]
 ----
-. ${APM_HOME}/apm/setenv.sh <port>
+. ${APM_HOME}/apm/setenv.sh port   // <1>
 ----
+<1> Where `port` must match the port used for the APM server.
 
-From the same command window, run your Java application supplying the `JAVA_OPTS` environment variable.
+This script configures some environment variables and `JAVA_OPTS` to enable an agent to non-intrusively instrument your application and send the details to the APM server. After executing the script, run your Java application supplying the `JAVA_OPTS` environment variable.
 
-==== Downloading the agent
+==== Setting up the agent manually
 
 Download the latest `hawkular-apm-agent.jar` from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
 
