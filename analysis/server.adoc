@@ -45,9 +45,10 @@ When starting the Hawkular APM server we may need to specify a port offset to av
 
 [source,shell]
 ----
-bin/standalone.sh -Djboss.socket.binding.port-offset=100
+bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <1>
 ----
+<1> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
-NOTE: The script _apm/setenv.sh_ is preconfigured to use a URL for an APM server on the localhost with port 8180, and therefore a port offset of 100 should be used if intending to use this script when instrumenting applications.
+NOTE: The script _apm/setenv.sh_ is preconfigured to use a URL for an APM server on the localhost with supplied port number (usually 8080), and therefore a port offset of 100 should be used if intending to use this script when instrumenting applications.
 
 

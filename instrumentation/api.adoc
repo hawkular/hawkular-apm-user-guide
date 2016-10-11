@@ -1,0 +1,24 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+toc::[]
+
+== Opentracing
+
+TODO: Information about opentracing and how to use the experimental Java provider
+
+
+== Zipkin
+
+http://zipkin.io/[Zipkin] is not strictly a _standard_ API, but could be considered a defacto standard. The zipkin project defines a standard span format for reporting information to the Zipkin server, and a standard format for propagating information between interacting services.
+
+A number of http://zipkin.io/pages/existing_instrumentations.html[client libraries] have been developed in different programming languages, which has made it ideal as a distributed tracing solution for polyglot applications.
+
+The Zipkin gateway is an integral part of the Hawkular APM server.
+
+All you will need to do to report information from the Zipkin instrumented applications, to the Hawkular APM server, is simply use the Hawkular APM server URL instead of the Zipkin URL.
+
+
+
