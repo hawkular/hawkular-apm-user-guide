@@ -6,14 +6,13 @@
 toc::[]
 
 
-
 Once the server has been installed, and started, you will be able to start up the user interface by pointing a browser to: http://localhost:<port>
 
-_Where 'port' is the port used by the server (e.g. 8180 if port offset of 100 has been used)._
+_Where 'port' is the port used by the server (e.g. 8080 by default)._
 
 At this point, you will be prompted to login.
 
-NOTE: If starting the server for the first time, you will need to create a user. See the server installation section for instructions on how to do this.
+NOTE: If starting the server for the first time, you will need to create a user. See the previous section for instructions on how to do this.
 
 == Components
 
@@ -75,13 +74,6 @@ The _Business Transaction_ list will include any business transactions that have
 
 The _Properties_ section enables properties associated with business transactions to be used to define inclusion or exclusion filters. The name of the property can be selected from a dropdown.
 
-The _Faults_ section enables the data to be limited based on the inclusion or exclusion of a particular fault within the observed data.
-
-The _Text_ field is only applicable to the Application Performance page, and focuses the table rows on entries that contain the specified text.
-
-The _Host Name_ filter can be used to focus on data associated with a particular host.
-
-
 == Business Transactions
 
 === Overview
@@ -108,9 +100,9 @@ For each business transaction:
 
 * Users can navigate to the detailed statistical information about the business transaction by selecting the transactions names.
 
-* Selecting the cog icon will take the user to the business transaction's configuration page.
+* If available, selecting the cog icon will take the user to the business transaction's configuration page. The cog is only visible for business transactions defined via the UI (i.e. not explicitly by the application).
 
-* The trash icon is used to delete the business transaction.
+* The trash icon is used to delete the business transaction. As with the cog icon, it will only be visible if the business transaction was created via the UI.
 
 
 ==== Candidates
