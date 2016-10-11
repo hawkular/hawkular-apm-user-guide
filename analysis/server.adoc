@@ -24,24 +24,16 @@ When the server is first unpacked, it will not be configured with any users. The
 
 [source,shell]
 ----
-bin/add-user.sh
+bin/add-user.sh -a -u MyUser -p MyPassword -g read-write,read-only
 ----
 
-This script will ask a series of questions before creating the user. Ensure that the user is an "Application User" (option b). When asked for the comma separated list of groups, enter:
-
-----
-read-write,read-only
-----
-
-This will enable the user to be able to report trace fragment information, and also view the results in the UI.
+The groups specified with the _-g_ option will enable the user to be able to report trace fragment information, and also view the results in the UI.
 
 If using the server to display information captured using zipkin client libraries, then the username/password will only be required to access the user interface (UI).
 
-However, if intending to use the _non-intrusive_ java agent based instrumentation mechanism, to observe the activity within a JVM based application, then an example script called _apm/setenv.sh_ is provided to get you up and running quickly. If you intend to use this script, it is preconfigured with a default user (*_jdoe_* with password *_password_*), so you should use these credentials when adding the user to the server.
+However, if intending to use the link:../instrumentation/jvmagent.adoc[JVM Agent] based instrumentation mechanism, or the Hawkular APM opentracing provider, then an example script called _apm/setenv.sh_ is provided to get you up and running quickly.
 
-NOTE: When attempting to use the password *password*, the server will ask you if you are sure, as this is not a secure password to use. Just type 'yes' and it will continue as normal.
-
-When starting the Hawkular APM server we may need to specify a port offset to avoid conflicts with other applications using the default port 8080. The command to start the server, from the root folder of the distribution, will be:
+The command to start the server, from the root folder of the distribution, will be:
 
 [source,shell]
 ----
@@ -49,6 +41,6 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <1>
 ----
 <1> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
-NOTE: The script _apm/setenv.sh_ is preconfigured to use a URL for an APM server on the localhost with supplied port number (usually 8080), and therefore a port offset of 100 should be used if intending to use this script when instrumenting applications.
+NOTE: The script _apm/setenv.sh_ is preconfigured to use a URL for an APM server on the localhost with supplied port number (usually 8080). If you intend to use this script, it is preconfigured with a default user (*_jdoe_* with password *_password_*), so you should use these credentials when adding the user to the server.
 
 
