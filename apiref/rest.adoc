@@ -105,30 +105,19 @@ Error responses may include an <<ApiError>> entity in the body.
 === analytics
 . link:#++GET__analytics_boundendpoints__name_++[Identify the bound endpoints for a business transaction]
 . link:#++GET__analytics_communication_summary++[Get the trace communication summary statistics associated with criteria]
-. link:#++POST__analytics_communication_summary++[Get the trace communication summary statistics associated with criteria]
 . link:#++GET__analytics_hostnames++[Get the host names associated with the criteria]
-. link:#++POST__analytics_hostnames++[Get the host names associated with the criteria]
 . link:#++GET__analytics_node_statistics++[Get the trace node timeseries statistics associated with criteria]
-. link:#++POST__analytics_node_statistics++[Get the trace node timeseries statistics associated with criteria]
 . link:#++GET__analytics_node_summary++[Get the trace node summary statistics associated with criteria]
-. link:#++POST__analytics_node_summary++[Get the trace node summary statistics associated with criteria]
 . link:#++GET__analytics_principals++[Get principal information]
-. link:#++POST__analytics_principals++[Get principal information]
 . link:#++GET__analytics_properties++[Get property information]
-. link:#++POST__analytics_properties++[Get property information]
 . link:#++GET__analytics_trace_completion_count++[Get the trace completion count]
-. link:#++POST__analytics_trace_completion_count++[Get the trace completion count]
 . link:#++GET__analytics_trace_completion_faultcount++[Get the number of trace instances that returned a fault]
-. link:#++POST__analytics_trace_completion_faultcount++[Get the number of trace instances that returned a fault]
 . link:#++GET__analytics_trace_completion_faults++[Get the trace completion fault details associated with criteria]
-. link:#++POST__analytics_trace_completion_faults++[Get the trace completion fault details associated with criteria]
 . link:#++GET__analytics_trace_completion_percentiles++[Get the trace completion percentiles associated with criteria]
 . link:#++GET__analytics_trace_completion_property__property_++[Get the trace completion property details associated with criteria]
-. link:#++POST__analytics_trace_completion_property__property_++[Get the trace completion property details associated with criteria]
 . link:#++GET__analytics_trace_completion_statistics++[Get the trace completion timeseries statistics associated with criteria]
-. link:#++POST__analytics_trace_completion_statistics++[Get the trace completion timeseries statistics associated with criteria]
 . link:#++GET__analytics_trace_completion_times++[Get the trace completion times associated with criteria]
-. link:#++POST__analytics_trace_completion_times++[Get the trace completion times associated with criteria]
+. link:#++GET__analytics_transactions++[Get transaction information]
 . link:#++GET__analytics_unboundendpoints++[Identify the unbound endpoints]
 
 
@@ -202,68 +191,8 @@ NOTE: *Get the trace communication summary statistics associated with criteria* 
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|No|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
 |tree|No|tree|boolean|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_communication_summary]]
-*Endpoint POST `/analytics/communication/summary`*
-
-NOTE: *Get the trace communication summary statistics associated with criteria* +
-
-
-
-
-*Query parameters*
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Parameter|Required|Description|Type|Format|Allowable Values
-
-|tree|No|tree|boolean|-|-
-
-|=======================
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -304,55 +233,7 @@ NOTE: *Get the host names associated with the criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|No|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_hostnames]]
-*Endpoint POST `/analytics/hostnames`*
-
-NOTE: *Get the host names associated with the criteria* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -393,68 +274,8 @@ NOTE: *Get the trace node timeseries statistics associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|No|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_node_statistics]]
-*Endpoint POST `/analytics/node/statistics`*
-
-NOTE: *Get the trace node timeseries statistics associated with criteria* +
-
-
-
-
-*Query parameters*
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Parameter|Required|Description|Type|Format|Allowable Values
-
-|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
-
-|=======================
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|interval|No|-|integer|int64|-
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -495,55 +316,7 @@ NOTE: *Get the trace node summary statistics associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|No|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_node_summary]]
-*Endpoint POST `/analytics/node/summary`*
-
-NOTE: *Get the trace node summary statistics associated with criteria* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -584,56 +357,7 @@ NOTE: *Get principal information* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_principals]]
-*Endpoint POST `/analytics/principals`*
-
-NOTE: *Get principal information* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -674,56 +398,7 @@ NOTE: *Get property information* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_properties]]
-*Endpoint POST `/analytics/properties`*
-
-NOTE: *Get property information* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -764,56 +439,7 @@ NOTE: *Get the trace completion count* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|integer
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_trace_completion_count]]
-*Endpoint POST `/analytics/trace/completion/count`*
-
-NOTE: *Get the trace completion count* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -854,56 +480,7 @@ NOTE: *Get the number of trace instances that returned a fault* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|integer
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_trace_completion_faultcount]]
-*Endpoint POST `/analytics/trace/completion/faultcount`*
-
-NOTE: *Get the number of trace instances that returned a fault* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -944,56 +521,7 @@ NOTE: *Get the trace completion fault details associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_trace_completion_faults]]
-*Endpoint POST `/analytics/trace/completion/faults`*
-
-NOTE: *Get the trace completion fault details associated with criteria* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1034,15 +562,7 @@ NOTE: *Get the trace completion percentiles associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1083,7 +603,7 @@ NOTE: *Get the trace completion property details associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|property|Yes|property|string|-|-
+|property|No|property|string|-|-
 
 |=======================
 
@@ -1095,68 +615,7 @@ NOTE: *Get the trace completion property details associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_trace_completion_property__property_]]
-*Endpoint POST `/analytics/trace/completion/property/{property}`*
-
-NOTE: *Get the trace completion property details associated with criteria* +
-
-
-
-
-*Path parameters*
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Parameter|Required|Description|Type|Format|Allowable Values
-
-|property|Yes|property|string|-|-
-
-|=======================
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1197,69 +656,8 @@ NOTE: *Get the trace completion timeseries statistics associated with criteria* 
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
-|faults|No|faults|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__analytics_trace_completion_statistics]]
-*Endpoint POST `/analytics/trace/completion/statistics`*
-
-NOTE: *Get the trace completion timeseries statistics associated with criteria* +
-
-
-
-
-*Query parameters*
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Parameter|Required|Description|Type|Format|Allowable Values
-
-|interval|No|aggregation time interval (in milliseconds)|integer|int64|-
-
-|=======================
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|interval|No|-|integer|int64|-
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1300,15 +698,7 @@ NOTE: *Get the trace completion times associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|Yes|business transaction name|string|-|-
-|startTime|No|traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|traces before this time, millisecond since epoch|integer|int64|-
-|hostName|No|host name|string|-|-
-|principal|No|principal|string|-|-
-|uri|No|uri|string|-|-
-|operation|No|operation|string|-|-
-|properties|No|traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|faults|No|faults|string|-|-
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1335,21 +725,21 @@ NOTE: *Get the trace completion times associated with criteria* +
 
 ==============================================
 
-[[POST__analytics_trace_completion_times]]
-*Endpoint POST `/analytics/trace/completion/times`*
+[[GET__analytics_transactions]]
+*Endpoint GET `/analytics/transactions`*
 
-NOTE: *Get the trace completion times associated with criteria* +
-
-
+NOTE: *Get transaction information* +
 
 
-*Body*
 
-[cols="^20,55,^25", options="header"]
+
+*Query parameters*
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
-|Required|Description|Data Type
+|Parameter|Required|Description|Type|Format|Allowable Values
 
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1722,7 +1112,6 @@ NOTE: *Retrieve the collector configuration for the optionally specified host an
 . link:#++GET__traces_complete__id_++[Retrieve end to end trace for specified id]
 . link:#++POST__traces_fragments++[Add a list of trace fragments]
 . link:#++GET__traces_fragments_search++[Query trace fragments associated with criteria]
-. link:#++POST__traces_fragments_search++[Query trace fragments associated with criteria]
 . link:#++GET__traces_fragments__id_++[Retrieve trace fragment for specified id]
 
 
@@ -1742,7 +1131,7 @@ NOTE: *Retrieve end to end trace for specified id* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|id|Yes|id of required trace|string|-|-
+|id|Yes|id of required record|string|-|-
 
 |=======================
 
@@ -1825,52 +1214,7 @@ NOTE: *Query trace fragments associated with criteria* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|No|trace name|string|-|-
-|startTime|No|retrieve traces after this time, millisecond since epoch|integer|int64|-
-|endTime|No|retrieve traces before this time, millisecond since epoch|integer|int64|-
-|properties|No|retrieve traces with these properties, defined as a comma separated list of name|value pairs|string|-|-
-|correlations|No|retrieve traces with these correlation identifiers, defined as a comma separated list of scope|value pairs|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|<<Trace>>
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[POST__traces_fragments_search]]
-*Endpoint POST `/traces/fragments/search`*
-
-NOTE: *Query trace fragments associated with criteria* +
-
-
-
-
-*Body*
-
-[cols="^20,55,^25", options="header"]
-|=======================
-|Required|Description|Data Type
-
-|Yes|query criteria|<<Criteria>>
+|criteria|No|-|string|-|-
 
 |=======================
 
@@ -1911,7 +1255,7 @@ NOTE: *Retrieve trace fragment for specified id* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|id|Yes|id of required trace fragment|string|-|-
+|id|Yes|id of required record|string|-|-
 
 |=======================
 
@@ -1965,7 +1309,7 @@ Inherits: <<ProcessorAction>>
 |Name|Required|Description|Type|Format|Allowable Values
 
 |expression|No|-|<<Expression>>|-|-
-|scope|No|-|string|-|Interaction
+|scope|No|-|string|-|Interaction, ControlFlow, CausedBy
 
 |=======================
 
@@ -2101,34 +1445,8 @@ Inherits: <<InstrumentAction>>
 |=======================
 |Name|Required|Description|Type|Format|Allowable Values
 
-|scope|No|-|string|-|Interaction
+|scope|No|-|string|-|Interaction, ControlFlow, CausedBy
 |value|No|-|string|-|-
-
-|=======================
-
-
-[[Criteria]]
-=== Criteria
-
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|businessTransaction|No|-|string|-|-
-|correlationIds|No|-|array of <<CorrelationIdentifier>>|-|-
-|endTime|No|-|integer|int64|-
-|faults|No|-|array of <<FaultCriteria>>|-|-
-|hostName|No|-|string|-|-
-|lowerBound|No|-|integer|int64|-
-|maxResponseSize|No|-|integer|int32|-
-|operation|No|-|string|-|-
-|principal|No|-|string|-|-
-|properties|No|-|array of <<PropertyCriteria>>|-|-
-|startTime|No|-|integer|int64|-
-|timeout|No|-|integer|int64|-
-|upperBound|No|-|integer|int64|-
-|uri|No|-|string|-|-
 
 |=======================
 
@@ -2154,20 +1472,6 @@ Inherits: <<ProcessorAction>>
 
 [[Expression]]
 === Expression
-
-
-[[FaultCriteria]]
-=== FaultCriteria
-
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|operator|No|-|string|-|HAS, HASNOT, EQ, NE, GT, GTE, LT, LTE
-|value|No|-|string|-|-
-
-|=======================
 
 
 [[Filter]]
@@ -2429,8 +1733,6 @@ Inherits: <<Expression>>
 |correlationIds|No|-|array of <<CorrelationIdentifier>>|-|-
 |details|No|-|object|-|-
 |duration|No|-|integer|int64|-
-|fault|No|-|string|-|-
-|faultDescription|No|-|string|-|-
 |issues|No|-|array of <<Issue>>|-|-
 |operation|No|-|string|-|-
 |properties|No|-|array of <<Property>>|-|-
@@ -2564,21 +1866,6 @@ Inherits: <<InteractionNode>>
 |=======================
 
 
-[[PropertyCriteria]]
-=== PropertyCriteria
-
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|name|No|-|string|-|-
-|operator|No|-|string|-|HAS, HASNOT, EQ, NE, GT, GTE, LT, LTE
-|value|No|-|string|-|-
-
-|=======================
-
-
 [[SetBusinessTransaction]]
 === SetBusinessTransaction
 
@@ -2634,28 +1921,13 @@ Inherits: <<InstrumentAction>>
 |=======================
 |Name|Required|Description|Type|Format|Allowable Values
 
-|descriptionExpression|No|-|string|-|-
-|nameExpression|No|-|string|-|-
+|valueExpression|No|-|string|-|-
 
 |=======================
 
 
 [[SetFaultAction]]
 === SetFaultAction
-
-Inherits: <<ProcessorAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|expression|No|-|<<Expression>>|-|-
-
-|=======================
-
-
-[[SetFaultDescriptionAction]]
-=== SetFaultDescriptionAction
 
 Inherits: <<ProcessorAction>>
 
@@ -2802,4 +2074,3 @@ Inherits: <<Expression>>
 |xpath|No|-|string|-|-
 
 |=======================
-
