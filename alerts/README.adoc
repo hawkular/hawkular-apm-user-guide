@@ -46,6 +46,3 @@ For example, if an end user invokes your application to place an order, and that
 
 The event will also include any properties that are associated with the trace instance defined as tags. If a property had multiple values, then the tag will have a comma separated list of those values.
 
-
-
-
