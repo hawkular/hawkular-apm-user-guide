@@ -9,7 +9,7 @@
 .. link:instrumentation/zipkin.adoc[Zipkin]
 .. link:instrumentation/custom.adoc[Custom]
 
-. link:analysis/ui.adoc[Analysing Captured Application Data]
+. link:ui.adoc[Analysing Captured Application Data]
 . link:alerts.adoc[Managing Alerts]
 . link:restapi.adoc[REST API]
 
