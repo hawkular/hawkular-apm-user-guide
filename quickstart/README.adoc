@@ -1,6 +1,7 @@
 :imagesdir: ../images
 
-= Quickstart
+Quickstart
+----------
 
 === Docker
 
