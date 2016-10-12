@@ -1,8 +1,11 @@
 :imagesdir: images
 
+Application Performance Management (APM)
+---------------------------------------
+
 image::hawkular-white-background.png[]
 
-= Application Performance Management (APM)
+
 
 
 
