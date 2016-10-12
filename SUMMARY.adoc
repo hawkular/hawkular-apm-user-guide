@@ -10,7 +10,6 @@
 .. link:instrumentation/custom.adoc[Custom]
 
 . link:analysis/README.adoc[Analysing Captured Application Data]
-.. link:analysis/console.adoc[User Interface]
-.. link:analysis/alerts.adoc[Managing Alerts]
+. link:analysis/alerts.adoc[Managing Alerts]
 . link:restapi.adoc[REST API]
 
