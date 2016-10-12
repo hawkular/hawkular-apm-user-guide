@@ -3,7 +3,8 @@
 :toc: macro
 :toc-title:
 
-= JVM Agent
+JVM Agent
+-----------
 
 toc::[]
 
