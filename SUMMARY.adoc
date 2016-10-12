@@ -14,7 +14,7 @@
 .. link:analysis/console.adoc[Console]
 .. link:analysis/alerts.adoc[Managing Alerts]
 
-. link:rest-api.adoc[REST API]
+. link:restapi.adoc[REST API]
 
 // Deprecated section
 // . link:agent/README.adoc[Agent Specification]
