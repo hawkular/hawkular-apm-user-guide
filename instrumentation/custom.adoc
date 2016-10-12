@@ -3,7 +3,8 @@
 :toc: macro
 :toc-title:
 
-= Publishing Trace Fragments to the APM Server
+Publishing Trace Fragments to the APM Server
+--------------------------------------------
 
 Trace fragments are published to the APM server via a REST API: link:../apiref/rest.html#POST__traces_fragments[Publish Trace Fragment]
 
