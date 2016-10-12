@@ -2,7 +2,7 @@
 :toc-title:
 
 Overview
-----
+--------
 
 === Media Type
 
