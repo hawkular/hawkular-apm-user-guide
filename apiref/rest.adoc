@@ -1,8 +1,6 @@
 :toc: macro
 :toc-title:
 
-toc::[]
-
 == Overview
 
 === Media Type
