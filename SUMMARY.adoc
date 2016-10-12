@@ -2,13 +2,15 @@
 
 . link:README.adoc[Introduction]
 . link:quickstart/README.adoc[Quickstart]
+
 . link:instrumentation/README.adoc[Instrumenting an Application]
 .. link:instrumentation/jvmagent.adoc[JVM Agent]
 .. link:instrumentation/opentracing.adoc[OpenTracing]
 .. link:instrumentation/zipkin.adoc[Zipkin]
 .. link:instrumentation/custom.adoc[Custom]
+
 . link:analysis/README.adoc[Analysing Captured Application Data]
-.. link:analysis/console.adoc[Console]
+.. link:analysis/console.adoc[User Interface]
 .. link:analysis/alerts.adoc[Managing Alerts]
 . link:restapi.adoc[REST API]
 
