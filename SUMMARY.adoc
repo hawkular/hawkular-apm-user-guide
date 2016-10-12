@@ -6,7 +6,8 @@
 
 . link:instrumentation/README.adoc[Instrumenting an Application]
 .. link:instrumentation/jvmagent.adoc[JVM Agent]
-.. link:instrumentation/zipkin-opentracing.adoc[Zipkin and OpenTracing]
+.. link:instrumentation/opentracing.adoc[OpenTracing]
+.. link:instrumentation/zipkin.adoc[Zipkin]
 .. link:instrumentation/custom.adoc[Custom]
 
 . link:analysis/README.adoc[Analysing Captured Application Data]
