@@ -1,0 +1,9 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+Opentracing
+-----------
+
+TODO: Information about opentracing and how to use the experimental Java provider

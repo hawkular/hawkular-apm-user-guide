@@ -1,16 +1,17 @@
 :imagesdir: images
 
-image::hawkular_twitter_header_1500x500.png[]
 
-== Application Performance Management (APM)
+image::hawkular-white-background.png[]
+
+Application Performance Management (APM)
+---------------------------------------
 
 This document provides information about the Application Performance Management (APM)
 component of the Hawkular open source management platform project.
 
 Information about the Hawkular project can be obtained from the website: http://www.hawkular.org
 
-
-=== What is Application Performance Management?
+==== What is Application Performance Management?
 
 As defined on https://en.wikipedia.org/wiki/Application_performance_management[wikipedia], _"application performance management  (APM)  is the monitoring and management of performance and availability of software applications. APM strives to detect and diagnose complex application performance problems to maintain an expected level of service"._
 
@@ -39,12 +40,9 @@ Once we have a definition for a Business Transaction, the next thing to understa
 
 === Structure of the Guide
 
-This guide will begin by providing information regarding how to install
-the APM system within a client and server environment.
+This document describes what Hawkular APM is, how to install it and explains how to 
+analyze the data in the user interface.
 
-The following section provides the user guide for the system.
-
-Finally the API reference section can be used to write additional tooling to interact
-with the system.
+The last section contains REST API documentation.
 
 
