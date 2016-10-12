@@ -1,6 +1,7 @@
 :imagesdir: ../images
 
-== Starting the Server
+Quickstart
+----------
 
 === Docker
 
@@ -41,16 +42,17 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 <2> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
-== Instrumenting your Application
+Instrumenting your Application
+-------------------------------
 
 === Explicit instrumentation
 
-* Zipkin
+====== Zipkin
 
 If your applcation is instrumented using http://zipkin.io/pages/existing_instrumentations.html[Zipkin compliant client libraries] then simply update your Zipkin URL to point to the Hawkular APM server (e.g. http://localhost:8080 if running all on the local machine).
 
 
-* Opentracing
+====== Opentracing
 
 NOTE: Currently restricted to Java support.
 
@@ -71,9 +73,9 @@ If your application is instrumented using the http://opentracing.io[Opentracing 
 ----
 
 
-=== Non-intrusive instrumentation using Java Agent
+==== Non-intrusive instrumentation using Java Agent
 
-==== Using script from binary release
+====== Using script from binary release
 
 [source,shell]
 ----
@@ -83,7 +85,7 @@ If your application is instrumented using the http://opentracing.io[Opentracing 
 
 This script configures some environment variables and `JAVA_OPTS` to enable an agent to non-intrusively instrument your application and send the details to the APM server. After executing the script, run your Java application supplying the `JAVA_OPTS` environment variable.
 
-==== Setting up the agent manually
+====== Setting up the agent manually
 
 Download the latest `hawkular-apm-agent.jar` from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
 

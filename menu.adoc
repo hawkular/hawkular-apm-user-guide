@@ -1,27 +1,15 @@
-:imagesdir: images
-
 = Summary
 
+. link:README.adoc[Introduction]
 . link:quickstart/README.adoc[Quickstart]
 
 . link:instrumentation/README.adoc[Instrumenting an Application]
 .. link:instrumentation/jvmagent.adoc[JVM Agent]
-.. link:instrumentation/api.adoc[Standard APIs]
+.. link:instrumentation/opentracing.adoc[OpenTracing]
+.. link:instrumentation/zipkin.adoc[Zipkin]
 .. link:instrumentation/custom.adoc[Custom]
 
-. link:analysis/README.adoc[Analysing Captured Application Data]
-.. link:analysis/server.adoc[Running the APM Server]
-.. link:analysis/console.adoc[Console]
-.. link:analysis/alerts.adoc[Managing Alerts]
-
-. link:apiref/README.adoc[API Reference]
-.. link:apiref/rest.adoc[REST]
-
-// Deprecated section
-// . link:agent/README.adoc[Agent Specification]
-// .. link:agent/collectorconfig.adoc[Collector Configuration]
-// .. link:agent/fragmentbuilding.adoc[Trace Fragment Building]
-// .. link:agent/btxnprocessing.adoc[Business Transaction Processing]
-// .. link:agent/fragmentreporter.adoc[Trace Fragment Reporting]
-
+. link:ui/README.adoc[Analysing Captured Application Data]
+. link:alerts/README.adoc[Managing Alerts]
+. link:restapi/README.adoc[REST API]
 
