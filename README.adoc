@@ -1,6 +1,6 @@
 :imagesdir: images
 
-image::hawkular_twitter_header_1500x500.png[]
+image::hawkular-white-background.png[]
 
 == Application Performance Management (APM)
 
