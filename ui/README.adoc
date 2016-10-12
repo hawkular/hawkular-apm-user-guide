@@ -3,19 +3,20 @@
 :toc: macro
 :toc-title:
 
+Analysing Captured Application Data
+-----------------------------------
+
 toc::[]
-
-
 
 Once the server has been installed, and started, you will be able to start up the user interface by pointing a browser to: http://localhost:<port>
 
-_Where 'port' is the port used by the server (e.g. 8180 if port offset of 100 has been used)._
+_Where 'port' is the port used by the server (e.g. 8080 by default)._
 
 At this point, you will be prompted to login.
 
-NOTE: If starting the server for the first time, you will need to create a user. See the server installation section for instructions on how to do this.
+NOTE: If starting the server for the first time, you will need to create a user. See the previous section for instructions on how to do this.
 
-== Components
+=== Components
 
 image::apm-components.png[]
 
@@ -31,7 +32,7 @@ The metrics provided are _count_ (the number of activity records aggregated), th
 
 This information can be used to identify performance bottlenecks within an application. Using details about the amount of 'actual' time specific within a component, combined with the number of times it is invoked, can help locate the best opportunities for making performance improvements.
 
-== Distributed Tracing
+=== Distributed Tracing
 
 image::apm-trace.png[]
 
@@ -67,7 +68,7 @@ The dotted grey line represents a concurrent activity being performed. In this c
 
 Each of the concurrent activities have the same pattern in this example image. They start with a 'producer' (or service invocation) calling another service. The communication across service boundaries is represented by a solid black line. The invoked service (associated with the URL /book in this case) then triggers another concurrent activity which invokes a further service.
 
-== Filter Sidebar
+=== Filter Sidebar
 
 On the lefthand side of some of the UI pages (Application Performance and Distributed Tracing currently) is an area for specifying filters that can be used to limit the information being viewed.
 
@@ -75,20 +76,11 @@ The _Business Transaction_ list will include any business transactions that have
 
 The _Properties_ section enables properties associated with business transactions to be used to define inclusion or exclusion filters. The name of the property can be selected from a dropdown.
 
-The _Faults_ section enables the data to be limited based on the inclusion or exclusion of a particular fault within the observed data.
-
-The _Text_ field is only applicable to the Application Performance page, and focuses the table rows on entries that contain the specified text.
-
-The _Host Name_ filter can be used to focus on data associated with a particular host.
-
-
-== Business Transactions
-
-=== Overview
+=== Business Transactions
 
 This page shows information about the business transactions, separated into tabs for the following categories.
 
-==== Managed
+===== Managed
 
 image::apm-btm-managed.png[]
 
@@ -108,12 +100,12 @@ For each business transaction:
 
 * Users can navigate to the detailed statistical information about the business transaction by selecting the transactions names.
 
-* Selecting the cog icon will take the user to the business transaction's configuration page.
+* If available, selecting the cog icon will take the user to the business transaction's configuration page. The cog is only visible for business transactions defined via the UI (i.e. not explicitly by the application).
 
-* The trash icon is used to delete the business transaction.
+* The trash icon is used to delete the business transaction. As with the cog icon, it will only be visible if the business transaction was created via the UI.
 
 
-==== Candidates
+===== Candidates
 
 image::apm-btm-candidates.png[]
 
@@ -131,14 +123,13 @@ If an existing business transaction is selected, then pressing the *_Update_* bu
 
 Whichever button is selected, the user will be taken to the configuration page for the business transaction. See the following section for information on how to configure the business transaction.
 
-
-==== Ignored
+===== Ignored
 
 This tab lists the business transactions that are being ignored.
 
 This state exists to enable business transaction instances to be categorised, and permanently marked as not being of interest. By explicitly identifying even business interactions that are not of interest, it is possible to detect any new traffic that may occur that has not previously be categorised, which informs the administrators that attention is required to investigate the unfamilar interactions.
 
-=== Information
+===== Information
 
 image::apm-btm-btxn.png[]
 
@@ -152,7 +143,7 @@ The right hand bottom region defines the business transaction properties that ar
 
 Both the fault and property filters are displayed at the top of the page. When displayed in green, they will filter out business transactions with that fault or property value. If however the user selects the filter, it will toggle to become red, representing the fact that data should be shown that does *not* contain that fault or property value.
 
-=== Configuration
+===== Configuration
 
 image::apm-btm-btxn-config.png[]
 
@@ -160,11 +151,11 @@ Whenever changes are saved, or the form is initially displayed, any validation e
 
 The configuration for a business transaction is separated into three sections.
 
-==== Description
+====== Description
 
 Simply enables the user to provide a description of the business transaction and its scope (in case it incorporates a number of different invocations).
 
-==== Filters
+====== Filters
 
 The filters section defines the link between the transaction instances, performed on specific URIs, and the business transaction name.
 
@@ -184,7 +175,7 @@ Once a transaction instance has been associated with a business transaction, the
 
 |===
 
-==== Processors
+===== Processors
 
 Out of the box, Hawkular APM is configured with instrumentation rules for a selection of technologies, that can used to monitor generic information about business transaction instances executing over those technologies.
 
@@ -250,5 +241,3 @@ The fields that need to be defined for an action will be specific to the action 
 |Text _(for Values only, not Predicates)_ | Converts a value into text form. The _Source_ field identifies where the information is obtained from (e.g. Content, Header). The _Key_ is dependent upon the source, if _Content_ then the key represents the index in an array of arguments, if _Header_ then the key is the header property name.
 
 |===
-
-
