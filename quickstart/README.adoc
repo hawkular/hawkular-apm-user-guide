@@ -3,8 +3,6 @@
 Quickstart
 ----------
 
-= dasda
-
 === Docker
 
 To start and bind to localhost:8080
