@@ -3,8 +3,7 @@
 == Instrumenting an Application
 
 In order to get tracing data from your application it needs to be instrumented.
-
-There are more several supported ways how your applications can be instrumented:
+There are several supported ways in which your applications can be instrumented:
 
 * Non-intrusive Java agent approach
 * Zipkin instrumentaiton libraries
