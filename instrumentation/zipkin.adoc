@@ -3,10 +3,6 @@
 :toc: macro
 :toc-title:
 
-== Opentracing
-
-TODO: Information about opentracing and how to use the experimental Java provider
-
 == Zipkin
 
 Zipkin project contains many instrumentation libraries for several programming languages, therefore it makes it easy to get tracing data for polyglot applications. It uses different approach as non-intrusive Java agent instrumentation. Developers have to use instrumented libraries or send tracing data directly to the server.  
