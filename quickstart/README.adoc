@@ -42,7 +42,8 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 <2> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
-= Instrumenting your Application
+Instrumenting your Application
+-------------------------------
 
 === Explicit instrumentation
 
