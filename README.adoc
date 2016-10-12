@@ -38,7 +38,7 @@ Once we have a definition for a Business Transaction, the next thing to understa
 
 === Structure of the Guide
 
-This document describs what Hawkular APM is, how to install it and explains how to 
+This document describes what Hawkular APM is, how to install it and explains how to 
 analyze the data in the user interface.
 
 The last section contains REST API documentation.
