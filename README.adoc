@@ -2,7 +2,8 @@
 
 image::hawkular-white-background.png[]
 
-= Application Performance Management (APM)
+Application Performance Management (APM)
+------------------------------------------
 
 This document provides information about the Application Performance Management (APM)
 component of the Hawkular open source management platform project.
