@@ -18,7 +18,7 @@ $ KAFKA_ZOOKEEPER=127.0.0.1 bin/standalone.sh -Djboss.http.port=8080
 
 If you are already using Zipkin in your environment change the binding port to `9411` and trace data will be reported to APM. Or you can specify APM address application configuration.
 
-==== Links
+=== Links
 * List of Zipkin http://zipkin.io/pages/existing_instrumentations.html[instrumentation libraries]
 * Zipkin libraries usage https://github.com/hawkular/hawkular-apm/tree/master/examples/polyglot-zipkin[examples]
 * Zipkin organization on https://github.com/openzipkin[Github]
