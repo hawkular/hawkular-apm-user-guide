@@ -3,6 +3,7 @@
 :toc: macro
 :toc-title:
 
-= Opentracing
+Opentracing
+-----------
 
 TODO: Information about opentracing and how to use the experimental Java provider
