@@ -10,7 +10,7 @@ The Zipkin project contains instrumentation libraries for several programming la
 Hawkular APM is compatible with Zipkin collectors so any application instrumented with Zipkin library can report data to Hawkular APM. 
 
 === Configuration
-Http collector is enabled by default. Kafka collector can be enabled by setting environmental variable `KAFKA_ZOOKEEPER`. It is zookeeper connect string, ex. `127.0.0.1:2181`.
+The Hawkular APM server's zipkin http collector is enabled by default. Kafka collector can be enabled by setting environmental variable `KAFKA_ZOOKEEPER`. It is zookeeper connect string, ex. `127.0.0.1:2181`.
 
 -----
 $ KAFKA_ZOOKEEPER=127.0.0.1 bin/standalone.sh -Djboss.http.port=8080
