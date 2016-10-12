@@ -3,6 +3,8 @@
 :toc: macro
 :toc-title:
 
+= Managing Alerts
+
 === Hawkular Services
 Hawkular Alerts is an alert engine that is distributed as part of http://www.hawkular.org[Hawkular Services].
 
@@ -22,7 +24,6 @@ Prior to starting the Hawkular APM server, the following environment variables s
 | HAWKULAR_USERNAME | The username for authenticating against the Hawkular Services server
 | HAWKULAR_PASSWORD | The password for authenticating against the Hawkular Services server
 |===
-
 
 === Event Types
 
