@@ -74,6 +74,17 @@ If your application is instrumented using the http://opentracing.io[Opentracing 
     </dependency>
 ----
 
+The Hawkular APM Tracer implementation class is `org.hawkular.apm.client.opentracing.APMTracer`. You will need to set the following:
+
+[source,shell]
+----
+export HAWKULAR_APM_URI=http://localhost:8080 // <1>
+export HAWKULAR_APM_USERNAME=jdoe // <2>
+export HAWKULAR_APM_PASSWORD=password // <2>
+----
+
+<1> Set this URL to point to the APM server.
+<2> Assumes the default username and password have been configured in the APM server.
 
 ==== Non-intrusive instrumentation using Java Agent
 
