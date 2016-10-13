@@ -6,4 +6,7 @@
 Opentracing
 -----------
 
-TODO: Information about opentracing and how to use the experimental Java provider
+The link:http://opentracing.io/[Opentracing] project has been established to create a vendor neutral standard API for reporting distributed tracing information from applications written in different languages.
+
+The project provides a set of APIs and abstract implementations from which tracing solutions can be built. This enables end users to select the most appropriate tracing solution for their needs, without having to change their application code.
+
