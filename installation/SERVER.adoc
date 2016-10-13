@@ -5,20 +5,24 @@
 
 toc::[]
 
-== Prerequisites
+The server can be obtained in two ways, from a downloadable distribution or as a Docker image. This section will describe both approaches.
 
-=== Java 8
+== Distribution
+
+=== Prerequisites
+
+==== Java 8
 
 You need a Java Virtual Machine compatible with Java 8.
 
-== Obtaining the distribution
+=== Obtaining the distribution
 
 Check out the https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases] page and download the latest
 version of the distribution zip file: `hawkular-apm-dist-X.Y.Z.zip`
 
 Unpack the zip file.
 
-== Starting the Server
+=== Starting the Server
 
 When the server is first unpacked, it will not be configured with any users. Therefore the first command to perform from the distribution's root folder is:
 
@@ -49,5 +53,31 @@ bin/standalone.sh -Djboss.socket.binding.port-offset=100
 ----
 
 NOTE: The script _apm/setenv.sh_ is preconfigured to use a URL for an APM server on the localhost with port 8180, and therefore a port offset of 100 should be used if intending to use this script when instrumenting applications.
+
+
+== Docker
+
+To run a server using the docker image, use the following command:
+
+[source,shell]
+----
+docker run -t -i -p {port}:8080 jboss/hawkular-apm-server
+----
+
+This will start a server at port specified by the _{port}_ parameter. For example *-p 8180:8080* would start the APM server at local port 8180.
+
+Just before the server starts, it will display the following message providing the credentials for an initial user created in the server:
+
+[source,shell]
+----
+ATTENTION ATTENTION ATTENTION ATTENTION
+We automatically created an admin user for you to access the Hawkular APM web interface:
+Username: {Auto generated username}
+Password: {Auto generated password}
+----
+
+These credentials should be used when logging into the APM console or when accessing the REST services.
+
+NOTE: If you want a server with a pre-configured username and password (e.g. for development and testing purposes), then use the _jboss/hawkular-apm-server_ image which uses the default username *jdoe* and password *password*.
 
 
