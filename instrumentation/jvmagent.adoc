@@ -3,9 +3,12 @@
 :toc: macro
 :toc-title:
 
+JVM Agent
+----------
+
 toc::[]
 
-== Configuring a Client Environment
+=== Configuring a Client Environment
 
 This section will help you to configure a JVM based client environment to instrument an application and send trace fragment data to the APM server.
 
@@ -19,12 +22,12 @@ To configure a client environment, simply run the *_setenv.sh_* script:
 
 [source,shell]
 ----
-. <APM_DISTRIBUTION>/apm/setenv.sh <port>
+. ${APM_HOME}/apm/setenv.sh port
 ----
 
 This sets the _JAVA_OPTS_ environment variable with the appropriate arguments to instrument any technology for which instrumentation rules have been defined.
 
-The _port_ parameter defines the local port upon which which the APM server has been started. For example, if a port offset of 100 was used, then pass the port parameter as 8180.
+The _port_ parameter defines the local port upon which which the APM server has been started, usually `8080`.
 
 === Properties
 
@@ -34,7 +37,7 @@ will override the environment variables. The property names are:
 |===
 | Name | Description
 
-| HAWKULAR_APM_URI | The URI for the APM server. The default value defined in the _setenv.sh_ script is _http://localhost:8180_.
+| HAWKULAR_APM_URI | The URI for the APM server. The default value defined in the _setenv.sh_ script is the supplied port on the `localhost`.
 | HAWKULAR_APM_USERNAME | The username to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_jdoe_*.
 | HAWKULAR_APM_PASSWORD | The password to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_password_*.
 | HAWKULAR_APM_CONFIG_REFRESH | Optional business transaction configuration refresh interval (in seconds).
@@ -45,13 +48,13 @@ will override the environment variables. The property names are:
 
 Although the steps above will work in many situations (e.g. Java standalone, Apache Tomcat), some environments have tighter control over the classpath made available to the business applications. Therefore some additional container specific configuration will be required.
 
-==== Wildfly / JBoss EAP
+===== Wildfly / JBoss EAP
 
 Wildfly requires any 'system packages', that need to be generally accessible by any application, to be defined in a system property called *_jboss.modules.system.pkgs_*.
 
 This property has been preconfigured in the *_setenv.sh_* script so no additional actions are required. However it has been described to highlight the additional step that was required.
 
-==== Karaf
+===== Karaf
 
 Edit the *_etc/config.properties_* file, within the Karaf installation, and append the following to the _org.osgi.framework.bootdelegation_ property:
 
@@ -81,7 +84,7 @@ ENV JAVA_OPTS -javaagent:$APM_AGENT=boot:$APM_AGENT
 The environment variables _HAWKULAR_APM_URI_, _HAWKULAR_APM_USERNAME_ and _HAWKULAR_APM_PASSWORD_ should be supplied at runtime.
 
 
-== Instrumented Technologies
+=== Instrumented Technologies
 
 This section lists the technologies that have instrumentation rules defined:
 

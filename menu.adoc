@@ -1,18 +1,15 @@
-:imagesdir: images
-
 = Summary
 
-. link:installation/README.adoc[Installation]
-.. link:installation/SERVER.adoc[Server]
-.. link:installation/JVMAGENT.adoc[JVM Agent]
-.. link:installation/ZIPKIN.adoc[Zipkin Gateway]
-. link:userguide/README.adoc[User Guide]
-.. link:userguide/CONSOLE.adoc[Console]
-. link:agent/README.adoc[Agent Specification]
-.. link:agent/collectorconfig.adoc[Collector Configuration]
-.. link:agent/fragmentbuilding.adoc[Trace Fragment Building]
-.. link:agent/btxnprocessing.adoc[Business Transaction Processing]
-.. link:agent/fragmentreporter.adoc[Trace Fragment Reporting]
-. link:apiref/README.adoc[API Reference]
-.. link:apiref/rest-apm.adoc[REST]
+. link:README.adoc[Introduction]
+. link:quickstart/README.adoc[Quickstart]
+
+. link:instrumentation/README.adoc[Instrumenting an Application]
+.. link:instrumentation/jvmagent.adoc[JVM Agent]
+.. link:instrumentation/opentracing.adoc[OpenTracing]
+.. link:instrumentation/zipkin.adoc[Zipkin]
+.. link:instrumentation/custom.adoc[Custom]
+
+. link:ui/README.adoc[Analysing Captured Application Data]
+. link:alerts/README.adoc[Managing Alerts]
+. link:restapi/README.adoc[REST API]
 

@@ -1,0 +1,25 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+Zipkin
+-------
+
+The Zipkin project contains instrumentation libraries for several programming languages, therefore it makes it easy to get tracing data for polyglot applications. It uses a different approach from the non-intrusive Java agent instrumentation. Developers have to use instrumented libraries or send tracing data directly to the server.  
+
+Hawkular APM is compatible with Zipkin collectors so any application instrumented with a Zipkin library can report data to Hawkular APM. 
+
+=== Configuration
+The Hawkular APM server's zipkin http collector is enabled by default. Kafka collector can be enabled by setting environmental variable `KAFKA_ZOOKEEPER`. It is zookeeper connect string, ex. `127.0.0.1:2181`.
+
+-----
+$ KAFKA_ZOOKEEPER=127.0.0.1 bin/standalone.sh -Djboss.http.port=8080
+-----
+
+If you are already using Zipkin in your environment change the binding port to `9411` and trace data will be reported to APM. Or you can specify APM address application configuration.
+
+=== Links
+* List of Zipkin http://zipkin.io/pages/existing_instrumentations.html[instrumentation libraries]
+* Zipkin libraries usage https://github.com/hawkular/hawkular-apm/tree/master/examples/polyglot-zipkin[examples]
+* Zipkin organization on https://github.com/openzipkin[Github]
