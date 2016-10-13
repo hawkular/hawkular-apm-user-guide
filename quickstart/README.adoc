@@ -2,8 +2,11 @@
 
 Quickstart
 ----------
+This quickstart shows how to start the Hawkular APM server and then instrument your application to start capturing information to help analyse its usage.
 
-=== Docker
+=== Running the Server
+
+==== Docker
 
 To start and bind to localhost:8080
 
@@ -14,7 +17,7 @@ docker run -p 8080:8080 jboss/hawkular-apm-server-dev
 
 This docker image starts a server with preconfigured user `jdoe` and password `password`.
 
-=== Binary Release
+==== Binary Release
 
 Download and unpack the latest `hawkular-apm-dist` distribution from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
 
@@ -28,7 +31,7 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <1>
 <1> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
-=== Source Build
+==== Source Build
 
 [source,shell]
 ----
@@ -42,10 +45,9 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 <2> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
-Instrumenting your Application
--------------------------------
+=== Instrumenting your Application
 
-=== Explicit instrumentation
+==== Explicit instrumentation
 
 ====== Zipkin
 
