@@ -217,12 +217,6 @@ The fields that need to be defined for an action will be specific to the action 
 
 |Evaluate URI |Apply a template to the URI to extract path and query parameters, e.g. /customer/{customerId} or /orders?{id}
 
-|Set Detail |Extract a node specific value. The '*_name_*' field represents the name associated with the detail, and  an expression (see below) to determine how the value is derived
-
-|Set Fault Code |Define a fault code value. The expression (see below) determines how the value is derived
-
-|Set Fault Description |Define a fault description value. The expression (see below) determines how the value is derived
-
 |Set Property |Extract a named business property. The '*_name_*' field names the business property, and the expression (see below) determines how the value is derived
 
 |===
