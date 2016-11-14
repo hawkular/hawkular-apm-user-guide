@@ -105,14 +105,14 @@ export HAWKULAR_APM_PASSWORD=password // <2>
 
 *JavaScript*
 
-To use JavaScript instrumentation use 
+JavaScript instrumentation can be consumed from https://www.npmjs.com/package/hawkular-apm-opentracing[npm]:
+
 [source,shell]
 ----
-export HAWKULAR_APM_URI=http://localhost:8080 // <1>
 npm install --save hawkular-apm-opentracing
-export HAWKULAR_APM_PASSWORD=password // <2>
 ----
 
+Library can be used in a browser and also in Node.js application. For more examples see our https://github.com/hawkular/hawkular-apm-opentracing-javascript/tree/master/examples[Github] repository.
 
 
 ==== Non-intrusive instrumentation using Java Agent
