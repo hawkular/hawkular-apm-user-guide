@@ -51,7 +51,7 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 | Name | Description
 
 | HAWKULAR_APM_CORS_ACCESS_CONTROL_ALLOW_HEADERS | List of extra CORS Access-Control-Allow-Headers, this list is added to predefined list of allowed headers.
-| HAWKULAR_APM_CORS_ALLOWED_ORIGINS | List of allowed CORS origins.
+| HAWKULAR_APM_CORS_ALLOWED_ORIGINS | List of allowed CORS origins. By default all origins are allowed.
 | HAWKULAR_APM_ELASTICSEARCH_CLUSTER | The Elasticsearch cluster name.
 | HAWKULAR_APM_ELASTICSEARCH_HOSTS | A comma separated list of URLs locating Elasticsearch hosts.
 | HAWKULAR_PASSWORD | Password for accessing Hawkular Services.
@@ -105,7 +105,14 @@ export HAWKULAR_APM_PASSWORD=password // <2>
 
 *JavaScript*
 
-TO BE COMPLETED
+To use JavaScript instrumentation use 
+[source,shell]
+----
+export HAWKULAR_APM_URI=http://localhost:8080 // <1>
+npm install --save hawkular-apm-opentracing
+export HAWKULAR_APM_PASSWORD=password // <2>
+----
+
 
 
 ==== Non-intrusive instrumentation using Java Agent
