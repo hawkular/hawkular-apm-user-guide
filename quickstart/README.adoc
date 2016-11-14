@@ -45,6 +45,21 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 <2> The default port should be `8080`, but if a different port is required (e.g. `9411` for zipkin clients) then it can be set here.
 
 
+==== Advanced Configuration
+
+|===
+| Name | Description
+
+| HAWKULAR_APM_CORS_ACCESS_CONTROL_ALLOW_HEADERS | List of extra CORS Access-Control-Allow-Headers, this list is added to predefined list of allowed headers.
+| HAWKULAR_APM_CORS_ALLOWED_ORIGINS | List of allowed CORS origins.
+| HAWKULAR_APM_ELASTICSEARCH_CLUSTER | The Elasticsearch cluster name.
+| HAWKULAR_APM_ELASTICSEARCH_HOSTS | A comma separated list of URLs locating Elasticsearch hosts.
+| HAWKULAR_PASSWORD | Password for accessing Hawkular Services.
+| HAWKULAR_URI | Location of the Hawkular Services server.
+| HAWKULAR_USERNAME | Username for accessing Hawkular Services.
+|===
+
+
 === Instrumenting your Application
 
 ==== Explicit instrumentation
