@@ -53,8 +53,6 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 
 If your applcation is instrumented using http://zipkin.io/pages/existing_instrumentations.html[Zipkin compliant client libraries] then simply update your Zipkin URL to point to the Hawkular APM server (e.g. http://localhost:8080 if running all on the local machine).
 
-If using a Zipkin client library that requires Kafka, then prior to starting the Hawkular APM server ensure you have a Kafka server running and set the environment variable *KAFKA_ZOOKEEPER* to its IP address.
-
 
 ====== Opentracing
 
