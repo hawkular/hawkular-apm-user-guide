@@ -53,12 +53,16 @@ bin/standalone.sh -b 0.0.0.0 -Djboss.http.port={PORT} // <2>
 
 If your applcation is instrumented using http://zipkin.io/pages/existing_instrumentations.html[Zipkin compliant client libraries] then simply update your Zipkin URL to point to the Hawkular APM server (e.g. http://localhost:8080 if running all on the local machine).
 
+If using a Zipkin client library that requires Kafka, then prior to starting the Hawkular APM server ensure you have a Kafka server running and set the environment variable *KAFKA_ZOOKEEPER* to its IP address.
+
 
 ====== Opentracing
 
-NOTE: Currently restricted to Java support.
+http://opentracing.io[OpenTracing is a vendor neutal API] used by applications to report distributed tracing information. Hawkular APM currently has implementations for _Java_ and _JavaScript_ (_Node.js_):
 
-If your application is instrumented using the http://opentracing.io[Opentracing API], then include the following dependencies in your `pom.xml`:
+*Java*
+
+If your application is instrumented using the Opentracing API, then include the following dependencies in your `pom.xml`:
 
 [source,xml]
 ----
@@ -86,32 +90,58 @@ export HAWKULAR_APM_PASSWORD=password // <2>
 <1> Set this URL to point to the APM server.
 <2> Assumes the default username and password have been configured in the APM server.
 
+*JavaScript*
+
+TO BE COMPLETED
+
+
 ==== Non-intrusive instrumentation using Java Agent
+
+NOTE: There are two variations of the Java Agent. The original one which is the default, and a new prototype which leverages the OpenTracing Java provider to report information to the APM server. This prototype version only instruments a reduced set of technologies currently, and does not support the business transaction configuration capability. The benefit of the new agent is that the rules are simpler (using the OpenTracing API) and therefore will be easier to maintain and hopefully lead to contributions.
 
 ====== Using script from binary release
 
 [source,shell]
 ----
-. ${APM_HOME}/apm/setenv.sh port   // <1>
+. ${APM_HOME}/apm/setenv.sh port [opentracing]  // <1>
 ----
-<1> Where `port` must match the port used for the APM server.
+<1> Where `port` must match the port used for the APM server. The second `opentracing` parameter is optional and if supplied will use the new prototype OpenTracing based java agent.
 
 This script configures some environment variables and `JAVA_OPTS` to enable an agent to non-intrusively instrument your application and send the details to the APM server. After executing the script, run your Java application supplying the `JAVA_OPTS` environment variable.
 
 ====== Setting up the agent manually
 
-Download the latest `hawkular-apm-agent.jar` from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
+Download the latest `hawkular-apm-agent.jar` (or `hawkular-apm-agent-opentracing.jar` if using the prototype OpenTracing based agent) from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
 
 [source,shell]
 ----
-export HAWKULAR_APM_URI=http://localhost:8080 // <1>
+export HAWKULAR_APM_URI=http://localhost:8080  // <1>
 export HAWKULAR_APM_USERNAME=jdoe // <2>
 export HAWKULAR_APM_PASSWORD=password // <2>
+----
+
+If using the original java agent, then:
+
+[source,shell]
+----
 export JAVA_OPTS="-javaagent:${PATH_TO}/hawkular-apm-agent.jar" // <3>
 
 # Wildfly specific
 export JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman,org.hawkular.apm.instrumenter,org.hawkular.apm.client.collector"
+----
 
+Otherwise, if using the new prototype OpenTracing based java agent, then:
+
+[source,shell]
+----
+export JAVA_OPTS="-javaagent:${PATH_TO}/hawkular-apm-agent-opentracing.jar" // <3>
+
+# Wildfly specific
+export JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman,org.hawkular.apm.agent.opentracing,io.opentracing,org.hawkular.apm.client.opentracing"
+----
+
+[source,shell]
+----
 java $JAVA_OPTS ....... // <4>
 ----
 
