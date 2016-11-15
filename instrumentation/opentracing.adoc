@@ -3,14 +3,14 @@
 :toc: macro
 :toc-title:
 
-Opentracing
+OpenTracing
 -----------
 
-The link:http://opentracing.io/[Opentracing] project has been established to create a vendor neutral standard API for reporting distributed tracing information from applications written in different languages.
+The link:http://opentracing.io/[OpenTracing] project has been established to create a vendor neutral standard API for reporting distributed tracing information from applications written in different languages.
 
 The project provides a set of APIs and abstract implementations from which tracing solutions can be built. This enables end users to select the most appropriate tracing solution for their needs, without having to change their application code.
 
-Refer to the link:../quickstart/README.adoc[Quickstart opentracing section] for information on how to configure the Hawkular APM Java opentracing provider.
+Refer to the link:../quickstart/README.adoc[Quickstart OpenTracing section] for information on how to configure the Hawkular APM Java and JavaScript OpenTracing providers.
 
-NOTE: Currently only Java is supported, but other languages will be added in future releases.
+NOTE: Currently only Java and JavaScript is supported, but other languages will be added in future releases.
  

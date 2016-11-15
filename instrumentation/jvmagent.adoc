@@ -6,28 +6,28 @@
 JVM Agent
 ----------
 
-toc::[]
-
 === Configuring a Client Environment
 
 This section will help you to configure a JVM based client environment to instrument an application and send trace fragment data to the APM server.
 
 First step is to obtain the Hawkular APM distribution. If you have not already done so, then see the instructions on the link:SERVER.html[Server Installation] page.
 
-Once the Hawkular APM distribution zip has been unpacked, you will find a folder called *_apm_*. This folder contains the necessary environment script and agent jar to configure a client JVM environment. 
+Once the Hawkular APM distribution zip has been unpacked, you will find a folder called *_apm_*. This folder contains the necessary environment script and agent jar(s) to configure a client JVM environment. 
 
-This section will explain how to use the supplied environment script, to setup the necessary client configuration, before starting the JVM. However if you would prefer to integrate this environment into your application/container configuration, then simply copy the entries from the contained *_setenv.sh_* script, moving the jar into an appropriate location.
+This section will explain how to use the supplied environment script, to setup the necessary client configuration, before starting the JVM. However if you would prefer to integrate this environment into your application/container configuration, then simply copy the entries from the contained *_setenv.sh_* script, moving the relevant agent jar into an appropriate location.
 
 To configure a client environment, simply run the *_setenv.sh_* script:
 
 [source,shell]
 ----
-. ${APM_HOME}/apm/setenv.sh port
+. ${APM_HOME}/apm/setenv.sh port [opentracing]
 ----
 
 This sets the _JAVA_OPTS_ environment variable with the appropriate arguments to instrument any technology for which instrumentation rules have been defined.
 
 The _port_ parameter defines the local port upon which which the APM server has been started, usually `8080`.
+
+The optional `opentracing` parameter indicates that the new prototype OpenTracing based java agent should be used. This agent provides simpler ByteMan rules that leverage the OpenTracing Java provider, however it currently does not cover the range of technologies handled by the default agent, or support the transaction configuration capabilities.
 
 === Properties
 
@@ -74,15 +74,16 @@ The _Dockerfile_ should be:
 FROM <Name of image being instrumented>
 
 ENV APM_VERSION=<APM Version being used>
-ENV APM_AGENT=/libs/hawkular-apm-agent-rest-$APM_VERSION.jar
+ENV APM_AGENT=/libs/hawkular-apm-agent.jar
 
-ADD https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.hawkular.apm&a=hawkular-apm-agent-rest&v=$APM_VERSION&e=jar $APM_AGENT
+ADD https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.hawkular.apm&a=hawkular-apm-agent&v=$APM_VERSION&e=jar $APM_AGENT
 
 ENV JAVA_OPTS -javaagent:$APM_AGENT=boot:$APM_AGENT
 ----
 
 The environment variables _HAWKULAR_APM_URI_, _HAWKULAR_APM_USERNAME_ and _HAWKULAR_APM_PASSWORD_ should be supplied at runtime.
 
+NOTE: If using the OpenTracing based java agent, then replace `hawkular-apm-agent` in the _Dockerfile_ with `hawkular-apm-agent-opentracing`.
 
 === Instrumented Technologies
 
@@ -90,17 +91,19 @@ This section lists the technologies that have instrumentation rules defined:
 
 * Apache Camel (core only, but this provides details of various components that are called)
 * HTTP clients
-** Java HttpURLConnection
-** Apache httpclient
-** RESTEasy JAX-RS client
+** Java HttpURLConnection ^*^
+** Apache httpclient ^*^
+** RESTEasy JAX-RS client ^*^
 * JMS
 * Servlet
 * Restlet
-* JDBC
+* JDBC ^*^
 * EJB (within Wildfly / JBoss EAP)
 * SwitchYard
 * RxJava
 * Netty
 
+
+(*) Also supported in the OpenTracing based Java Agent.
 
 
