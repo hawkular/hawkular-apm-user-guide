@@ -3,8 +3,7 @@
 :toc: macro
 :toc-title:
 
-Managing Alerts
----------------
+= Managing Alerts
 
 === Hawkular Services
 Hawkular Alerts is an alert engine that is distributed as part of http://www.hawkular.org[Hawkular Services].

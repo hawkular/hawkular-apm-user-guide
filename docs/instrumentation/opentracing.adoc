@@ -3,8 +3,7 @@
 :toc: macro
 :toc-title:
 
-OpenTracing
------------
+= OpenTracing
 
 The link:http://opentracing.io/[OpenTracing] project has been established to create a vendor neutral standard API for reporting distributed tracing information from applications written in different languages.
 

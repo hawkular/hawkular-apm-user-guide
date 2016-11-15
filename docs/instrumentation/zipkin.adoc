@@ -3,8 +3,7 @@
 :toc: macro
 :toc-title:
 
-Zipkin
--------
+= Zipkin
 
 The Zipkin project contains instrumentation libraries for several programming languages, therefore it makes it easy to get tracing data for polyglot applications. It uses a different approach from the non-intrusive Java agent instrumentation. Developers have to use instrumented libraries or send tracing data directly to the server.  
 
