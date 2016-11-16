@@ -1,7 +1,7 @@
 :imagesdir: ../images
 
-Quickstart
-----------
+= Quickstart
+
 This quickstart shows how to start the Hawkular APM server and then instrument your application to start capturing information to help analyse its usage.
 
 === Running the Server

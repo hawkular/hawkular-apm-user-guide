@@ -3,8 +3,7 @@
 :toc: macro
 :toc-title:
 
-JVM Agent
-----------
+= JVM Agent
 
 === Configuring a Client Environment
 

@@ -3,8 +3,7 @@
 :toc: macro
 :toc-title:
 
-Analysing Captured Application Data
------------------------------------
+= Analysing Captured Application Data
 
 toc::[]
 
