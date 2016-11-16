@@ -102,12 +102,11 @@ Error responses may include an <<ApiError>> entity in the body.
 
 
 === analytics
-. link:#++GET__analytics_boundendpoints__name_++[Identify the bound endpoints for a business transaction]
+. link:#++GET__analytics_boundendpoints__name_++[Identify the bound endpoints for a transaction]
 . link:#++GET__analytics_communication_summary++[Get the trace communication summary statistics associated with criteria]
 . link:#++GET__analytics_hostnames++[Get the host names associated with the criteria]
 . link:#++GET__analytics_node_statistics++[Get the trace node timeseries statistics associated with criteria]
 . link:#++GET__analytics_node_summary++[Get the trace node summary statistics associated with criteria]
-. link:#++GET__analytics_principals++[Get principal information]
 . link:#++GET__analytics_properties++[Get property information]
 . link:#++GET__analytics_trace_completion_count++[Get the trace completion count]
 . link:#++GET__analytics_trace_completion_faultcount++[Get the number of trace instances that returned a fault]
@@ -125,7 +124,7 @@ Error responses may include an <<ApiError>> entity in the body.
 [[GET__analytics_boundendpoints__name_]]
 *Endpoint GET `/analytics/boundendpoints/{name}`*
 
-NOTE: *Identify the bound endpoints for a business transaction* +
+NOTE: *Identify the bound endpoints for a transaction* +
 
 
 
@@ -136,7 +135,7 @@ NOTE: *Identify the bound endpoints for a business transaction* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|name|Yes|business transaction name|string|-|-
+|name|Yes|transaction name|string|-|-
 
 |=======================
 
@@ -305,47 +304,6 @@ NOTE: *Get the trace node timeseries statistics associated with criteria* +
 *Endpoint GET `/analytics/node/summary`*
 
 NOTE: *Get the trace node summary statistics associated with criteria* +
-
-
-
-
-*Query parameters*
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Parameter|Required|Description|Type|Format|Allowable Values
-
-|criteria|No|-|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[GET__analytics_principals]]
-*Endpoint GET `/analytics/principals`*
-
-NOTE: *Get principal information* +
 
 
 
@@ -805,22 +763,65 @@ NOTE: *Identify the unbound endpoints* +
 
 
 === config
-. link:#++GET__config_businesstxn_full++[Retrieve the business transaction configurations, changed since an optional specified time]
-. link:#++POST__config_businesstxn_full++[Add or update the business transaction configurations]
-. link:#++DELETE__config_businesstxn_full__name_++[Remove the business transaction configuration with the specified name]
-. link:#++GET__config_businesstxn_full__name_++[Retrieve the business transaction configuration for the specified name]
-. link:#++PUT__config_businesstxn_full__name_++[Add or update the business transaction configuration for the specified name]
-. link:#++GET__config_businesstxn_summary++[Retrieve the business transaction summaries]
-. link:#++POST__config_businesstxn_validate++[Validate the business transaction configuration]
 . link:#++GET__config_collector++[Retrieve the collector configuration for the optionally specified host and server]
+. link:#++GET__config_transaction_full++[Retrieve the transaction configurations, changed since an optional specified time]
+. link:#++POST__config_transaction_full++[Add or update the transaction configurations]
+. link:#++DELETE__config_transaction_full__name_++[Remove the transaction configuration with the specified name]
+. link:#++GET__config_transaction_full__name_++[Retrieve the transaction configuration for the specified name]
+. link:#++PUT__config_transaction_full__name_++[Add or update the transaction configuration for the specified name]
+. link:#++GET__config_transaction_summary++[Retrieve the transaction summaries]
+. link:#++POST__config_transaction_validate++[Validate the transaction configuration]
 
 
 ==============================================
 
-[[GET__config_businesstxn_full]]
-*Endpoint GET `/config/businesstxn/full`*
+[[GET__config_collector]]
+*Endpoint GET `/config/collector`*
 
-NOTE: *Retrieve the business transaction configurations, changed since an optional specified time* +
+NOTE: *Retrieve the collector configuration for the optionally specified host and server* +
+
+
+
+
+*Query parameters*
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Parameter|Required|Description|Type|Format|Allowable Values
+
+|type|No|optional type|string|-|-
+|host|No|optional host name|string|-|-
+|server|No|optional server name|string|-|-
+
+|=======================
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|<<CollectorConfiguration>>
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[GET__config_transaction_full]]
+*Endpoint GET `/config/transaction/full`*
+
+NOTE: *Retrieve the transaction configurations, changed since an optional specified time* +
 
 
 
@@ -858,10 +859,10 @@ NOTE: *Retrieve the business transaction configurations, changed since an option
 
 ==============================================
 
-[[POST__config_businesstxn_full]]
-*Endpoint POST `/config/businesstxn/full`*
+[[POST__config_transaction_full]]
+*Endpoint POST `/config/transaction/full`*
 
-NOTE: *Add or update the business transaction configurations* +
+NOTE: *Add or update the transaction configurations* +
 
 
 
@@ -887,10 +888,10 @@ NOTE: *Add or update the business transaction configurations* +
 
 ==============================================
 
-[[DELETE__config_businesstxn_full__name_]]
-*Endpoint DELETE `/config/businesstxn/full/{name}`*
+[[DELETE__config_transaction_full__name_]]
+*Endpoint DELETE `/config/transaction/full/{name}`*
 
-NOTE: *Remove the business transaction configuration with the specified name* +
+NOTE: *Remove the transaction configuration with the specified name* +
 
 
 
@@ -901,7 +902,7 @@ NOTE: *Remove the business transaction configuration with the specified name* +
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|name|Yes|business transaction name|string|-|-
+|name|Yes|transaction name|string|-|-
 
 |=======================
 
@@ -928,51 +929,10 @@ NOTE: *Remove the business transaction configuration with the specified name* +
 
 ==============================================
 
-[[GET__config_businesstxn_full__name_]]
-*Endpoint GET `/config/businesstxn/full/{name}`*
+[[GET__config_transaction_full__name_]]
+*Endpoint GET `/config/transaction/full/{name}`*
 
-NOTE: *Retrieve the business transaction configuration for the specified name* +
-
-
-
-
-*Path parameters*
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Parameter|Required|Description|Type|Format|Allowable Values
-
-|name|Yes|business transaction name|string|-|-
-
-|=======================
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|<<BusinessTxnConfig>>
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[PUT__config_businesstxn_full__name_]]
-*Endpoint PUT `/config/businesstxn/full/{name}`*
-
-NOTE: *Add or update the business transaction configuration for the specified name* +
+NOTE: *Retrieve the transaction configuration for the specified name* +
 
 
 
@@ -983,7 +943,7 @@ NOTE: *Add or update the business transaction configuration for the specified na
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|name|Yes|business transaction name|string|-|-
+|name|Yes|transaction name|string|-|-
 
 |=======================
 
@@ -996,7 +956,7 @@ NOTE: *Add or update the business transaction configuration for the specified na
 |=======================
 |Status Code|Reason|Response Model
 
-|200|Success|array of object
+|200|Success|<<TransactionConfig>>
 |500|Internal server error|-
 
 |=======================
@@ -1010,81 +970,21 @@ NOTE: *Add or update the business transaction configuration for the specified na
 
 ==============================================
 
-[[GET__config_businesstxn_summary]]
-*Endpoint GET `/config/businesstxn/summary`*
+[[PUT__config_transaction_full__name_]]
+*Endpoint PUT `/config/transaction/full/{name}`*
 
-NOTE: *Retrieve the business transaction summaries* +
-
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
+NOTE: *Add or update the transaction configuration for the specified name* +
 
 
 
 
-==============================================
-
-[[POST__config_businesstxn_validate]]
-*Endpoint POST `/config/businesstxn/validate`*
-
-NOTE: *Validate the business transaction configuration* +
-
-
-
-
-*Response*
-
-*Status codes*
-[cols="^20,55,^25", options="header"]
-|=======================
-|Status Code|Reason|Response Model
-
-|200|Success|array of object
-|500|Internal server error|-
-
-|=======================
-
-
-
-==============================================
-
-
-
-
-==============================================
-
-[[GET__config_collector]]
-*Endpoint GET `/config/collector`*
-
-NOTE: *Retrieve the collector configuration for the optionally specified host and server* +
-
-
-
-
-*Query parameters*
+*Path parameters*
 
 [cols="15,^10,35,^15,^10,^15", options="header"]
 |=======================
 |Parameter|Required|Description|Type|Format|Allowable Values
 
-|type|No|optional type|string|-|-
-|host|No|optional host name|string|-|-
-|server|No|optional server name|string|-|-
+|name|Yes|transaction name|string|-|-
 
 |=======================
 
@@ -1097,7 +997,65 @@ NOTE: *Retrieve the collector configuration for the optionally specified host an
 |=======================
 |Status Code|Reason|Response Model
 
-|200|Success|<<CollectorConfiguration>>
+|200|Success|array of object
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[GET__config_transaction_summary]]
+*Endpoint GET `/config/transaction/summary`*
+
+NOTE: *Retrieve the transaction summaries* +
+
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|array of object
+|500|Internal server error|-
+
+|=======================
+
+
+
+==============================================
+
+
+
+
+==============================================
+
+[[POST__config_transaction_validate]]
+*Endpoint POST `/config/transaction/validate`*
+
+NOTE: *Validate the transaction configuration* +
+
+
+
+
+*Response*
+
+*Status codes*
+[cols="^20,55,^25", options="header"]
+|=======================
+|Status Code|Reason|Response Model
+
+|200|Success|array of object
 |500|Internal server error|-
 
 |=======================
@@ -1318,24 +1276,6 @@ Inherits: <<ProcessorAction>>
 
 Inherits: <<InstrumentAction>>
 
-[[BusinessTxnConfig]]
-=== BusinessTxnConfig
-
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|deleted|No|-|boolean|-|-
-|description|No|-|string|-|-
-|filter|No|-|<<Filter>>|-|-
-|lastUpdated|No|-|integer|int64|-
-|level|No|-|string|-|Ignore, None, All
-|processors|No|-|array of <<Processor>>|-|-
-
-|=======================
-
-
 [[CollectorConfiguration]]
 === CollectorConfiguration
 
@@ -1344,9 +1284,9 @@ Inherits: <<InstrumentAction>>
 |=======================
 |Name|Required|Description|Type|Format|Allowable Values
 
-|businessTransactions|No|-|object|-|-
 |instrumentation|No|-|object|-|-
 |properties|No|-|object|-|-
+|transactions|No|-|object|-|-
 
 |=======================
 
@@ -1728,13 +1668,12 @@ Inherits: <<Expression>>
 |=======================
 |Name|Required|Description|Type|Format|Allowable Values
 
-|baseTime|No|-|integer|int64|-
 |correlationIds|No|-|array of <<CorrelationIdentifier>>|-|-
-|details|No|-|object|-|-
 |duration|No|-|integer|int64|-
 |issues|No|-|array of <<Issue>>|-|-
 |operation|No|-|string|-|-
 |properties|No|-|array of <<Property>>|-|-
+|timestamp|No|-|integer|int64|-
 |type|No|-|string|-|Consumer, Producer, Component
 |uri|No|-|string|-|-
 
@@ -1865,80 +1804,6 @@ Inherits: <<InteractionNode>>
 |=======================
 
 
-[[SetBusinessTransaction]]
-=== SetBusinessTransaction
-
-Inherits: <<InstrumentAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|nameExpression|No|-|string|-|-
-
-|=======================
-
-
-[[SetDetail]]
-=== SetDetail
-
-Inherits: <<InstrumentAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|name|No|-|string|-|-
-|nodeType|No|-|string|-|-
-|onStack|No|-|boolean|-|-
-|valueExpression|No|-|string|-|-
-
-|=======================
-
-
-[[SetDetailAction]]
-=== SetDetailAction
-
-Inherits: <<ProcessorAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|expression|No|-|<<Expression>>|-|-
-|name|No|-|string|-|-
-
-|=======================
-
-
-[[SetFault]]
-=== SetFault
-
-Inherits: <<InstrumentAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|valueExpression|No|-|string|-|-
-
-|=======================
-
-
-[[SetFaultAction]]
-=== SetFaultAction
-
-Inherits: <<ProcessorAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|expression|No|-|<<Expression>>|-|-
-
-|=======================
-
-
 [[SetLevel]]
 === SetLevel
 
@@ -1949,20 +1814,6 @@ Inherits: <<InstrumentAction>>
 |Name|Required|Description|Type|Format|Allowable Values
 
 |levelExpression|No|-|string|-|-
-
-|=======================
-
-
-[[SetPrincipal]]
-=== SetPrincipal
-
-Inherits: <<InstrumentAction>>
-
-[cols="15,^10,35,^15,^10,^15", options="header"]
-|=======================
-|Name|Required|Description|Type|Format|Allowable Values
-
-|nameExpression|No|-|string|-|-
 
 |=======================
 
@@ -2015,6 +1866,34 @@ Inherits: <<InstrumentAction>>
 |=======================
 
 
+[[SetTraceId]]
+=== SetTraceId
+
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Name|Required|Description|Type|Format|Allowable Values
+
+|valueExpression|No|-|string|-|-
+
+|=======================
+
+
+[[SetTransaction]]
+=== SetTransaction
+
+Inherits: <<InstrumentAction>>
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Name|Required|Description|Type|Format|Allowable Values
+
+|nameExpression|No|-|string|-|-
+
+|=======================
+
+
 [[Suppress]]
 === Suppress
 
@@ -2043,13 +1922,31 @@ Inherits: <<Expression>>
 |=======================
 |Name|Required|Description|Type|Format|Allowable Values
 
-|businessTransaction|No|-|string|-|-
+|fragmentId|No|-|string|-|-
 |hostAddress|No|-|string|-|-
 |hostName|No|-|string|-|-
-|id|No|-|string|-|-
 |nodes|No|-|array of <<Node>>|-|-
-|principal|No|-|string|-|-
-|startTime|No|-|integer|int64|-
+|timestamp|No|-|integer|int64|-
+|traceId|No|-|string|-|-
+|transaction|No|-|string|-|-
+
+|=======================
+
+
+[[TransactionConfig]]
+=== TransactionConfig
+
+
+[cols="15,^10,35,^15,^10,^15", options="header"]
+|=======================
+|Name|Required|Description|Type|Format|Allowable Values
+
+|deleted|No|-|boolean|-|-
+|description|No|-|string|-|-
+|filter|No|-|<<Filter>>|-|-
+|lastUpdated|No|-|integer|int64|-
+|level|No|-|string|-|Ignore, None, All
+|processors|No|-|array of <<Processor>>|-|-
 
 |=======================
 
@@ -2073,3 +1970,4 @@ Inherits: <<Expression>>
 |xpath|No|-|string|-|-
 
 |=======================
+
