@@ -6,7 +6,7 @@ This documentation uses GitBook framework. Live version is deployed
 ## Build & Run
 ```shell
 $ npm install gitbook-cli -g
-$ gitbook install     # Install gitbook plugins
+$ gitbook install    # Install gitbook plugins
 $ gitbook serve
 ```
 
