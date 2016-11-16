@@ -4,7 +4,10 @@ function menuLogo() {
         .prepend('<div style="text-align: center;"><a class="menu-logo"' +
             ' href="https://hawkular.gitbooks.io/hawkular-apm-user-guide/content/"><img style="margin-bottom: 0"' +
             ' src="' + logo + '"></a>' +
-            '<h2 style="margin-top: 0">Hawkular-APM</h2></div>')
+            '<h2 style="margin-top: 0">Hawkular-APM</h2></div>');
+
+    $('nav a.custom-link')
+        .css({'display': 'none'});
 };
 
 function headerLinks() {
