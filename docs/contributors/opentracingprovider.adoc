@@ -1,0 +1,190 @@
+:imagesdir: ../images
+
+:toc: macro
+:toc-title:
+
+= Writing an OpenTracing Provider
+
+The link:http://opentracing.io/[OpenTracing] project has been established to create a vendor neutral standard API for reporting distributed tracing information from applications written in different languages.
+
+
+== Propagation of Trace State
+
+To enable an end to end trace instance to be recorded and reconstructed at a later date, it is necessary to propagate trace state information between interacting services.
+
+=== Trace State
+
+The APM related trace state is comprised of:
+
+.Propagated state
+|===
+|Name |Header Field| Description
+|Trace Id | HWKAPMTRACEID | The id associated with the trace instance being propagated
+|Interaction Id | HWKAPMID | Unique id representing the interaction between the services
+|Transaction | HWKAPMTXN | Optional name for the type of the trace instance
+|Level | HWKAPMLEVEL | Optional field that governs what information should be reported for this trace instance (default is report all)
+|===
+
+The current reporting levels are:
+
+.Reporting levels
+|===
+|Level | Description
+|All | Report all trace information
+|None | Report no information (temporary decision)
+|Ignore | Long term decision that this trace type is not of interest
+|===
+
+== Managing APM Trace Fragments
+
+The OpenTracing standard uses the concept of a `Span` to represent some scope of activity within the application, for example handling a received request, performing a database query or invoking a remote service. To establish a call trace, the `Spans` can be associated using `ChildOf` references.
+
+In APM, this 'call trace' associated with the set of referenced `Spans` is translated into a trace fragment, with each `Span` being represented by a specific `Node` type (i.e. `Consumer`, `Component` or `Producer`). We call it a trace fragment, as it represents one part of an end to end `Trace` reflecting activity across a distributed application.
+
+OpenTracing also defines a `FollowsFrom` reference type, defining a causal relationship between two `Spans`. This relationship can be established after the referenced `Span` has finished (and therefore may have been reported to the server), so the APM trace fragment models this relationship by creating an additional top level `Consumer` node with a correlation id to identify the referenced `Span's` node.
+
+=== Trace Fragment Completion
+
+As described in the following sections, `Trace` fragments are created under various situations, and a hierarchy of nodes (related to created spans) are constructed to represent the call trace for the fragment.
+
+
+Once all of the nodes have been completed, the `Trace` fragment can be submitted to the APM server. To detect when this situation occurs, it is recommended to use a form of reference counting, where the counter is incremented when a new `Span` is ‘started’ for the Trace fragment, and decremented when the `Span` is ‘finished’. So once the count reaches 0, the `Trace` fragment is in a state where it can be reported.
+
+
+=== Trace Recorder
+
+A Trace Recorder is responsible for dealing with completed `Trace` fragments.
+
+==== HTTP
+
+Each provider should support a HTTP based implementation of this recorder. See the link:/restapi/README.adoc[REST API] for more details.
+
+
+== Mapping Span to APM Node
+
+=== Processing References
+
+When requested to create a Span, the first step is to assess the supplied list of References (including `ChildOf` references that may be provided separate from other e.g. `FollowsFrom` references).
+
+==== Identify a Primary Reference
+
+A primary reference is the one that is considered the true ‘parent’ to the `Span` being created. Although a `Span` may have multiple references, under certain circumstances we will treat one of the references as being more relevant. For example, as the principle aim of the technology is distributed tracing, references related to propagated trace state from distributed services will take precedence. However it may not be possible to isolate a single reference as being more relevant than others, in which case a primary reference will not be found.
+
+The primary reference may be based on extracted trace state, a parent `Span` or a reference to a `FollowsFrom` `Span`. Each will be handled in a different way - but first we will discuss how to identify whether a primary reference exists.
+
+First step is to identify the number of each type of reference, i.e.
+
+(a) References representing *extracted span context*, whether ref type is `ChildOf` or `FollowFrom`. The extracted context would be obtained from the tracer, e.g. `extractedContext = tracer.extract(carrier)`
+
+(b) `ChildOf` references representing Parent/Child `Span` relationship
+
+(c) `FollowsFrom` references representing links to previous related `Spans`
+
+
+Once we have these numbers, we use the following logic to determine whether a primary reference can be determined:
+
+* If references of type (a) exist, then if there is one reference it will be the primary. If there is more than one, then there is no distinct primary.
+
+* If there are no (a) references, then we check references of type (b) to see if they exist, and if so, if there is only one then it will be the primary. As previously, if there is more than one, then there is no distinct primary.
+
+* Finally if there are no (a) or (b) references, then we would check references of type (c). If one exists, it will be the primary, otherwise the is no primary.
+
+
+This approach means that references related to inbound communication (i.e. invocation of a service) take priority in terms of building a trace - which should be natural considering our principal aim is to build a distributed trace of communications between services.
+
+==== Processing a Primary Reference
+
+If a primary reference is found, then its processing will be dependent upon its type (i.e. a, b or c from previous section).
+
+===== Reference Representing Extracted Span Context
+
+This reference represents potential extracted span context (i.e. trace state) propagated from an invoking client. Even if no trace state is actually found, it indicates that a communication has occurred to trigger this service.
+
+Therefore a new Trace fragment (and context) should be started, with the trace state (if available) initialised in the context and the top level `Span` should be represented by a Consumer node within that Trace fragment. The ‘id’ part of the trace state should be registered as a correlation id (of scope Interaction) on the Consumer.
+
+The other references should then be processed as discussed in the “Processing Remaining References” section below.
+
+===== Reference Representing Parent/Child Relationship of Type ChildOf
+
+Create new node to represent the child `Span` and add it as a child of the node associated with the supplied `Span`.
+
+Share the trace context associated with the parent `Span`.
+
+The other references should then be processed as discussed in the “Processing Remaining References” section below.
+
+===== Reference Representing Parent/Child Relationship of Type FollowsFrom
+
+First step is to initialise a new Trace fragment (and context) and copy over information from the referenced trace context regarding the initial endpoint (URI & Operation) that were invoked for this service.
+
+The next step is to create a Consumer node as the top level node in this new fragment, with a CausedBy based correlation id using the nodeId associated with the referenced `Span`. The URI and Operation fields on this `Consumer` node should be set to the same values associated with the extracted trace context (or root `Span` if no extracted context), and the endpointType of the `Consumer` should be set to null as it is an internal link. The timestamp on this `Consumer` should be set to the timestamp of the `Span`.
+
+At this point we need to create the actual node representing the current `Span`. This will be created as a child of the `Consumer` node. Initially set as `Component`.
+
+The final step is to copy the trace state from the referenced trace context.
+
+Unlike the previous two categories of primary reference, in this case there should be no other references to process.
+
+==== No Primary Reference
+
+If a primary reference cannot be identified in the list of supplied references, then it implies a “join” scenario. So first thing is to create a new `Trace` fragment to represent the join.
+
+If the references are all associated with the same trace id, then the trace state (i.e. trace id, transaction, reporting level, etc) associated with the first reference should be transferred to the trace context associated with the newly created fragment.
+
+If the references are associated with more than one trace instance, then currently log a warning indicating that this is not currently supported by the OpenTracing spec.
+
+NOTE: Depending upon how the clarification of references and trace instances is worded, we may want to support and optional feature to support join/convergence of different trace instances. If this is the case, then the only difference is that under these circumstances, the trace state is not propagated. The following section will take care of establishing correlation ids from  the new trace to the converging trace instances.
+
+The next step is to create a `Consumer` node as the top level node in this new fragment, with correlation ids for each reference as discussed in the following “Processing Remaining References” section.
+
+The URI and Operation fields on this `Consumer` node should be set to the same values associated with the initial endpoint copied over from the first referenced trace context, and the endpointType of the Consumer should be set to null as it is an internal link. The timestamp on this Consumer should be set to the timestamp of the `Span`.
+
+At this point we need to create the actual node representing the current `Span`. This will be created as a child of the `Consumer` node. The type of the node will be dependent upon whether it is used to inject context (i.e. `Component` if no, `Producer` if yes - see details in following sections).
+
+==== Processing Remaining References
+
+Whether a primary reference has been identified or not, the following processing should be performed on all other (i.e. non primary) references.
+
+If the reference is to a local `Span` , then the nodeId of the referenced `Span` should be used to create a `CausedBy` based correlation id for the current node.
+
+If the reference is based on extract trace state, then an `Interaction` based correlation id with the id provided in the trace state.
+
+NOTE: The ‘nodeId’ represents a composite of target fragment’s ‘fragmentId’ field and a sequence of indexes to locate the target node within the tree. For example, “abcd:0:2” represents a node in fragment ‘abcd’ which can be found by retrieving node 0 under the fragment, and then the third child node under that node. 
+
+=== Initialising the APM Node from the Span
+
+When a `Span` is finished, the details from the `Span` can be used to populate the information in the associated `Trace` node.
+
+The top level information that can be directly initialised in the `Node` is:
+
+* Operation
+* Timestamp (in microseconds)
+* Duration (in microseconds)
+
+The remainder of the information to be processed relates to the `Span` tags. These should be processed based on the following rules:
+
+==== URI
+
+If the tag has a “.uri” or “.url” suffix, then the path part of the URI/URL should be assigned to the Uri field on the node.
+
+The part of the tag name, without the suffix, should be used to represent either the componentType (if `Component` node) or endpointType (if `Producer` or `Consumer`).
+
+==== Tag ‘component’
+
+The value should be used to set the componentType field on a `Component` node.
+
+==== Tag ‘transaction’
+
+If the transaction has not been defined in the trace context, then the value of this tag will be used to set it. This value will then be propagated to other subsequent trace contexts.
+
+==== Other Tags
+
+The tag name and value should be used to create a property on the current node. The ‘type’ of the property should be set to reflect the type of the value (e.g. `Number`, `Boolean`, `Binary` or `Text`).
+
+=== Injecting Trace State
+
+When the ‘inject’ method is called on the OpenTracing Tracer, it will provide a `Span` (context) for the node associated with the outgoing request.
+
+An unique id should be created, associated with the trace state being returned for injection into the outbound message, and used to create an `Interaction` based correlation id for the current node. The node should also be created as a `Producer`.
+
+
+

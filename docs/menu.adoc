@@ -10,4 +10,7 @@
 . link:ui/README.adoc[Analysing Captured Application Data]
 . link:alerts/README.adoc[Managing Alerts]
 . link:restapi/README.adoc[REST API]
+. link:contributors/README.adoc[Contributors]
+.. link:contributors/opentracingprovider.adoc[Writing an OpenTracing Provider]
+
 

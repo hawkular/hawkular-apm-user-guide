@@ -1,0 +1,7 @@
+:imagesdir: ../images
+
+= Contributors
+
+This section of the documentation is for people who wish to contribute to the project.
+
+
