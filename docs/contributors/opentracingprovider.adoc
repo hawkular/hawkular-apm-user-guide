@@ -102,7 +102,7 @@ This reference represents potential extracted span context (i.e. trace state) pr
 
 Therefore a new Trace fragment (and context) should be started, with the trace state (if available) initialised in the context and the top level `Span` should be represented by a Consumer node within that Trace fragment. The ‘id’ part of the trace state should be registered as a correlation id (of scope Interaction) on the Consumer.
 
-The other references should then be processed as discussed in the “Processing Remaining References” section below.
+The other references should then be processed as discussed in the <<remainingrefs,Processing Remaining References>> section below.
 
 ===== Reference Representing Parent/Child Relationship of Type ChildOf
 
@@ -110,7 +110,7 @@ Create new node to represent the child `Span` and add it as a child of the node 
 
 Share the trace context associated with the parent `Span`.
 
-The other references should then be processed as discussed in the “Processing Remaining References” section below.
+The other references should then be processed as discussed in the <<remainingrefs,Processing Remaining References>> section below.
 
 ===== Reference Representing Parent/Child Relationship of Type FollowsFrom
 
@@ -134,12 +134,13 @@ If the references are associated with more than one trace instance, then current
 
 NOTE: Depending upon how the clarification of references and trace instances is worded, we may want to support and optional feature to support join/convergence of different trace instances. If this is the case, then the only difference is that under these circumstances, the trace state is not propagated. The following section will take care of establishing correlation ids from  the new trace to the converging trace instances.
 
-The next step is to create a `Consumer` node as the top level node in this new fragment, with correlation ids for each reference as discussed in the following “Processing Remaining References” section.
+The next step is to create a `Consumer` node as the top level node in this new fragment, with correlation ids for each reference as discussed in the following <<remainingrefs,Processing Remaining References>> section.
 
 The URI and Operation fields on this `Consumer` node should be set to the same values associated with the initial endpoint copied over from the first referenced trace context, and the endpointType of the Consumer should be set to null as it is an internal link. The timestamp on this Consumer should be set to the timestamp of the `Span`.
 
 At this point we need to create the actual node representing the current `Span`. This will be created as a child of the `Consumer` node. The type of the node will be dependent upon whether it is used to inject context (i.e. `Component` if no, `Producer` if yes - see details in following sections).
 
+[[remainingrefs]]
 ==== Processing Remaining References
 
 Whether a primary reference has been identified or not, the following processing should be performed on all other (i.e. non primary) references.

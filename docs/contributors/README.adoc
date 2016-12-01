@@ -5,3 +5,9 @@
 This section of the documentation is for people who wish to contribute to the project.
 
 
+== Models
+
+The trace model used by Hawkular APM is shown in the following diagram:
+
+image::apm-trace-model.png[]
+
