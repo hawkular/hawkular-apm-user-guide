@@ -27,6 +27,7 @@ The APM related trace state is comprised of:
 
 The current reporting levels are:
 
+[[reporting-levels]]
 .Reporting levels
 |===
 |Level | Description
@@ -188,4 +189,34 @@ When the ‘inject’ method is called on the OpenTracing Tracer, it will provid
 An unique id should be created, associated with the trace state being returned for injection into the outbound message, and used to create an `Interaction` based correlation id for the current node. The node should also be created as a `Producer`.
 
 
+=== Sampling 
 
+Sampling implementation is not required, however if a provider decideds to implement it should follow following rules.
+
+Sampler interface should be defined as:
+
+----
+Sampler {
+  boolean isSampled(trace);
+}
+----
+
+Sampling in Hawkular APM is defined as <<reporting-levels,reporting level>>, therefore providers
+should propagate this state variable between calling services. If a service receives a trace state
+without level then it should invoke sampler to decide if the current trace should be sampled or not,
+otherwise it should respect sampling decision from parent's state.
+
+==== Tag ’sampling.priority’
+
+Instrumented application can use this tag to tell the instrumentation to do the best to capture the
+current trace (value >= 1) or not to record (value 0) it at all.
+
+If the level from propagated state is `All` and user define `sampling.priority=0` then the span
+will be captured if it belongs to a trace fragment which was started with state `All`, however all
+descendant trace fragments of that span won't be captured.
+
+If the level from propagated state is `None` and user define `sampling.priority=1` then the span will
+be captured and also all spans/nodes belonging to that trace fragment.
+
+Changed reporting level with `sampling.priority` should be also propagated to all descendant spans/trace
+fragments.
