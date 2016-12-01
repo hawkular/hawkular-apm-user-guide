@@ -11,7 +11,7 @@ function menuLogo() {
 };
 
 function headerLinks() {
-    $('h1, h2, h3, h4').filter('[id]').each(function () {
+    $('h1, h2, h3, h4, h5, h6').filter('[id]').each(function () {
         $(this).html('<a class="header-link" href="#'+$(this).attr('id')+'">' + $(this).text() + '</a>');
     });
 }

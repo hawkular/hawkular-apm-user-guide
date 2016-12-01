@@ -17,15 +17,11 @@ body, html {
     font-family: 'bariol_regular' !important;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
     color: #414042 !important;
 }
 
-h1, h2, h3, h4 {
-    color: #414042 !important;
-}
-
-h1 a.header-link, h2 a.header-link, h3 a.header-link, h4 a.header-link {
+h1 a.header-link, h2 a.header-link, h3 a.header-link, h4 a.header-link, h5 a.header-link, h6 a.header-link {
     text-decoration: none;
     color: #414042 !important;
 }
@@ -48,6 +44,6 @@ a:hover {
     text-decoration: underline;
 }
 
-h1, h2, h3, h4, p, a {
+h1, h2, h3, h4, h5, h6, p, a {
     font-family: 'bariol_regular';
 }
