@@ -191,7 +191,9 @@ An unique id should be created, associated with the trace state being returned f
 
 === Sampling 
 
-Sampling implementation is not required, however if a provider decideds to implement it should follow following rules.
+Implementation of sampling algorithms is optional, however all providers should by default provide sampler which samples all traces and sets reporting level to `All`.
+
+If a provider decides to implement sampling it should adhere to the following rules.
 
 Sampler interface should be defined as:
 
