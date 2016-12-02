@@ -150,7 +150,7 @@ If the reference is to a local `Span` , then the nodeId of the referenced `Span`
 
 If the reference is based on extract trace state, then an `Interaction` based correlation id with the id provided in the trace state.
 
-NOTE: The ‘nodeId’ represents a composite of target fragment’s ‘fragmentId’ field and a sequence of indexes to locate the target node within the tree. For example, “abcd:0:2” represents a node in fragment ‘abcd’ which can be found by retrieving node 0 under the fragment, and then the third child node under that node. 
+NOTE: The ‘nodeId’ represents a composite of target fragment’s ‘fragmentId’ field and a sequence of indexes to locate the target node within the tree. For example, “abcd:0:2” represents a node in fragment ‘abcd’ which can be found by retrieving node 0 under the fragment, and then the third child node under that node.
 
 === Initialising the APM Node from the Span
 
@@ -178,6 +178,19 @@ The value should be used to set the componentType field on a `Component` node.
 
 If the transaction has not been defined in the trace context, then the value of this tag will be used to set it. This value will then be propagated to other subsequent trace contexts.
 
+==== Tag ‘service’
+
+A free-format value that ties this request to a specific service. Defaults to the value of the environment variable `HAWKULAR_APM_SERVICE_NAME`.
+When this is not set and the application is executed in OpenShift, this defaults to a value that is derived from the environment variable `OPENSHIFT_BUILD_NAME`,
+prefixed with the namespace specified via the environment variable `OPENSHIFT_BUILD_NAMESPACE`. For instance, if the `OPENSHIFT_BUILD_NAME` is `bar-1` and the `OPENSHIFT_BUILD_NAMESPACE` is `foo`, this
+value is `foo.bar` (ie: the version number is left out).
+
+==== Tag ‘buildStamp’
+
+A free-format value that ties this request to a specific build of the service. Similar to the tag `service`, but defaults to the actual value of the environment variable `OPENSHIFT_BUILD_NAME`,
+prefixed with the namespace specified via the environment variable `OPENSHIFT_BUILD_NAMESPACE`. For instance, if the `OPENSHIFT_BUILD_NAME` is `bar-1` and the `OPENSHIFT_BUILD_NAMESPACE` is `foo`, this
+value is `foo.bar-1`.
+
 ==== Other Tags
 
 The tag name and value should be used to create a property on the current node. The ‘type’ of the property should be set to reflect the type of the value (e.g. `Number`, `Boolean`, `Binary` or `Text`).
@@ -189,7 +202,7 @@ When the ‘inject’ method is called on the OpenTracing Tracer, it will provid
 An unique id should be created, associated with the trace state being returned for injection into the outbound message, and used to create an `Interaction` based correlation id for the current node. The node should also be created as a `Producer`.
 
 
-=== Sampling 
+=== Sampling
 
 Implementation of sampling algorithms is optional, however all providers should by default provide sampler which samples all traces and sets reporting level to `All`.
 
