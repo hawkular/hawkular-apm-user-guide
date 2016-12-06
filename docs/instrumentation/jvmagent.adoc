@@ -41,6 +41,7 @@ will override the environment variables. The property names are:
 | HAWKULAR_APM_PASSWORD | The password to use with the REST client when communicating with the APM server. The default defined in the _setenv.sh_ script is *_password_*.
 | HAWKULAR_APM_CONFIG_REFRESH | Optional business transaction configuration refresh interval (in seconds).
 | HAWKULAR_APM_LOG_LEVEL | The logging level to use when reporting client collector information to the console (uses Java Util Logging levels. The default is _INFO_.
+| HAWKULAR_APM_SERVICE_NAME | The service name to be added to the trace information. When not set, the environment variables `OPENSHIFT_BUILD_NAMESPACE` and `OPENSHIFT_BUILD_NAME` are used to derive a sensible value.
 |===
 
 === Container Specific Configuration
@@ -104,5 +105,3 @@ This section lists the technologies that have instrumentation rules defined:
 
 
 (*) Also supported in the OpenTracing based Java Agent.
-
-
