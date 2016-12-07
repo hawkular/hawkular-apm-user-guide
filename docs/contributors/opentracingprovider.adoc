@@ -44,6 +44,8 @@ In APM, this 'call trace' associated with the set of referenced `Spans` is trans
 
 OpenTracing also defines a `FollowsFrom` reference type, defining a causal relationship between two `Spans`. This relationship can be established after the referenced `Span` has finished (and therefore may have been reported to the server), so the APM trace fragment models this relationship by creating an additional top level `Consumer` node with a correlation id to identify the referenced `Span's` node.
 
+A Trace fragment contains two id fields, the `traceId` and `fragmentId`. The `traceId` will be a consistent value across all fragments related to the same trace instance. The `fragmentId` will be a unique value for each trace fragment. When a trace fragment represents the initial fragment within a trace instance, it will have the same value in its `traceId` and `fragmentId` fields.
+
 === Trace Fragment Completion
 
 As described in the following sections, `Trace` fragments are created under various situations, and a hierarchy of nodes (related to created spans) are constructed to represent the call trace for the fragment.
