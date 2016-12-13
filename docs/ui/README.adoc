@@ -67,25 +67,19 @@ The dotted grey line represents a concurrent activity being performed. In this c
 
 Each of the concurrent activities have the same pattern in this example image. They start with a 'producer' (or service invocation) calling another service. The communication across service boundaries is represented by a solid black line. The invoked service (associated with the URL /book in this case) then triggers another concurrent activity which invokes a further service.
 
-=== Filter Sidebar
-
-On the lefthand side of some of the UI pages (Application Performance and Distributed Tracing currently) is an area for specifying filters that can be used to limit the information being viewed.
-
-The _Transaction_ list will include any named transactions that have been defined. This can be used to focus the Application Performance information just on a specific business transaction to help identify performance bottlenecks.
-
-The _Properties_ section enables properties associated with traces to be used to define inclusion or exclusion filters. The name of the property can be selected from a dropdown.
-
 === Transactions
 
 This page shows information about the named transactions, separated into tabs for the following categories.
 
 ===== Managed
 
-image::apm-btm-managed.png[]
+image::apm-txn.png[]
 
-This tab shows summary statistics for a list of actively managed or disabled business transactions.
+This tab shows summary statistics for a list of actively managed or disabled transactions.
 
-On the left of the page is two pie charts representing the transaction and fault counts across the business transactions.
+The lefthand side of the page provides a collapsible sidebar with various filters that can be applied to the information being viewed. This is explained in more detail in a later section.
+
+Next to the sidebar is two pie charts representing the transaction and fault counts across the transactions.
 
 Each transaction is further presented with the following statistics:
 
@@ -130,9 +124,11 @@ This state exists to enable named transaction instances to be categorised, and p
 
 ===== Information
 
-image::apm-btm-btxn.png[]
+image::apm-txn-info.png[]
 
-The page is divided into three main regions.
+The lefthand side of the page provides a collapsible sidebar with various filters that can be applied to the information being viewed. This is explained in more detail in a later section.
+
+The remainder of the page is divided into three regions.
 
 The top graph shows an aggregated view of the stats associated with completed named transactions subject to any defined time span and other filter criteria (e.g. faults and/or properties). The stats are displayed as line charts for min, average and max values. A bar chart is used to display the number of transactions, and the number of transactions that completed with a fault.
 
@@ -234,3 +230,13 @@ The fields that need to be defined for an action will be specific to the action 
 |Text _(for Values only, not Predicates)_ | Converts a value into text form. The _Source_ field identifies where the information is obtained from (e.g. Content, Header). The _Key_ is dependent upon the source, if _Content_ then the key represents the index in an array of arguments, if _Header_ then the key is the header property name.
 
 |===
+
+=== Filter Sidebar
+
+On the lefthand side of most of the UI pages is an area for specifying filters that can be used to limit the information being viewed.
+
+The _Transaction_ list will include any named transactions that have been defined. This can be used to focus the presented information just on a specific transaction to help identify performance bottlenecks.
+
+The _Properties_ section enables properties associated with traces to be used to define inclusion or exclusion filters. The name of the property can be selected from a dropdown.
+
+
