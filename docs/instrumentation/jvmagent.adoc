@@ -105,3 +105,21 @@ This section lists the technologies that have instrumentation rules defined:
 
 
 (*) Also supported in the OpenTracing based Java Agent.
+
+
+=== Adding Custom Rules to the OpenTracing JVM Agent
+
+When using the OpenTracing based JVM agent approach, it is possible to include custom http://byteman.jboss.org/[ByteMan] rules to:
+
+* instrument third party libraries not currently covered by the standard set of rules bundled with the agent (please consider contributing these to the Hawkular APM project for wider use and support)
+
+* instrument your own application code/libraries
+
+* add tags (application context and/or business metrics) and logs to spans
+
+
+The rule files should be placed in a sub-folder `apmrules` within the application's classpath.
+
+The rules should use a helper class `org.hawkular.apm.agent.opentracing.OpenTracingManager` to provide functions for accessing the OpenTracing tracer and performing specific tasks.
+
+
