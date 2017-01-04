@@ -63,7 +63,7 @@ The symbol on the left of the diagram represents the consumer of a message. Soli
 
 The hexagon represents a component, with an icon identifying the type of component. In the above image, the first component is an EJB as indicated by the coffee cup. The second component is a database activity.
 
-The dotted grey line represents a concurrent activity being performed. In this case three separate concurrent activities are performed within the scope of the EJB, after the database query.
+The dotted grey line represents a concurrent activity being performed. In this case two separate concurrent activities are performed within the scope of the EJB, after the database query.
 
 Each of the concurrent activities have the same pattern in this example image. They start with a 'producer' (or service invocation) calling another service. The communication across service boundaries is represented by a solid black line. The invoked service (associated with the URL /book in this case) then triggers another concurrent activity which invokes a further service.
 
@@ -83,11 +83,11 @@ Next to the sidebar is two pie charts representing the transaction and fault cou
 
 Each transaction is further presented with the following statistics:
 
-* The number of completed instances of the transaction (per hour)
+* The number of completed instances of the transaction
 
-* The completion time 95 percentile (per hour)
+* The completion time 95 percentile
 
-* The number of instances that completed with faults (per hour)
+* The number of instances that completed with faults
 
 For each transaction:
 
