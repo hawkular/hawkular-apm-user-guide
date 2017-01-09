@@ -27,7 +27,7 @@ The graph shows aggregated durations for the component types being monitored, at
 
 The table presents the performance information aggregated based on the component type (e.g. Database, EJB, Consumer, etc), URI and (if relevant) operation name.
 
-The metrics provided are _count_ (the number of activity records aggregated), the _elapsed_ time and _actual_ time. The _elapsed_ time represents the total time spent within a particular component (including calls to child components). The _actual_ time represents only the time specific in the component itself.
+The metrics provided are _count_ (the number of activity records aggregated), the _elapsed_ time and _actual_ time. The _elapsed_ time represents the total time spent within a particular component (including calls to child components), as demarcated by a span start and finish. The _actual_ time represents an estimate of the amount of time spent in the component itself, by deducting the time spent in the child components. This estimate is most accurate when all of the child components are performed synchronously (in sequence). If some are performed asynchronously, then the result will be an approximation.
 
 This information can be used to identify performance bottlenecks within an application. Using details about the amount of 'actual' time specific within a component, combined with the number of times it is invoked, can help locate the best opportunities for making performance improvements.
 
