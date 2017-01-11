@@ -17,6 +17,35 @@ docker run -p 8080:8080 jboss/hawkular-apm-server-dev
 
 This docker image starts a server with preconfigured user `jdoe` and password `password`.
 
+==== OpenShift
+
+The Hawkular APM can be deployed in OpenShift using two different approaches. Before trying out either approach, make sure you have a running OpenShift environment.
+
+===== Complete Deployment
+
+The first approach creates a complete deployment of Hawkular APM, including the required services and routes, as well as a default user (admin/password). If you only want to set up a single instance of Hawkular APM, then this is the best option.
+
+[source,shell]
+----
+oc create -f https://raw.githubusercontent.com/jboss-dockerfiles/hawkular-apm/master/openshift-templates/hawkular-apm-server-deployment.yml
+----
+
+When you log into the OpenShift console you will see the Hawkular APM service. By selecting the associated URL it will bring up the APM UI and allow you to log in using the username `admin` and password `password`.
+
+===== As Template
+
+The second approach creates a "template", which can be used to create new services, and it’s commonly known as "instant app". If you are a service provider and want to let your users deploy APM on demand, on their own namespaces and possibly customizing the deployment, then this is the best option.
+
+[source,shell]
+----
+oc login -u system:admin
+oc create -n openshift -f https://raw.githubusercontent.com/jboss-dockerfiles/hawkular-apm/master/openshift-templates/hawkular-apm-server.yml
+----
+
+Note that the command above installs the template into the `openshift` namespace, meaning that it’s available to every user on your OpenShift cluster. If you want to restrict this template to a single project, remove the `-n openshift` option.
+
+The Hawkular APM server will now be listed as an Instant App.
+
 ==== Binary Release
 
 Download and unpack the latest `hawkular-apm-dist` distribution from https://github.com/hawkular/hawkular-apm/releases[Hawkular APM releases].
